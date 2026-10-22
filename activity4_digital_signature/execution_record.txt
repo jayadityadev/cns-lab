@@ -1,0 +1,168 @@
+﻿=== AUTOMATED TEST EXECUTION RECORD ===
+============================= test session starts =============================
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.7.0 -- D:\Codebase\cns\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\Codebase\cns
+configfile: pyproject.toml
+collecting ... collected 18 items
+
+activity4_digital_signature/tests/test_signature.py::test_generate_key_pair_defaults PASSED [  5%]
+activity4_digital_signature/tests/test_signature.py::test_generate_key_pair_custom_size PASSED [ 11%]
+activity4_digital_signature/tests/test_signature.py::test_generate_key_pair_invalid_size PASSED [ 16%]
+activity4_digital_signature/tests/test_signature.py::test_export_public_key_pem PASSED [ 22%]
+activity4_digital_signature/tests/test_signature.py::test_get_public_key_fingerprint PASSED [ 27%]
+activity4_digital_signature/tests/test_signature.py::test_sign_and_verify_normal_message PASSED [ 33%]
+activity4_digital_signature/tests/test_signature.py::test_sign_accepts_raw_bytes PASSED [ 38%]
+activity4_digital_signature/tests/test_signature.py::test_sign_invalid_types PASSED [ 44%]
+activity4_digital_signature/tests/test_signature.py::test_verification_failure_on_message_tampering PASSED [ 50%]
+activity4_digital_signature/tests/test_signature.py::test_verification_failure_on_signature_tampering PASSED [ 55%]
+activity4_digital_signature/tests/test_signature.py::test_verification_failure_on_wrong_public_key PASSED [ 61%]
+activity4_digital_signature/tests/test_signature.py::test_verification_failure_on_malformed_signature PASSED [ 66%]
+activity4_digital_signature/tests/test_signature.py::test_probabilistic_signature_pss_property PASSED [ 72%]
+activity4_digital_signature/tests/test_signature.py::test_empty_message_signing_and_verification PASSED [ 77%]
+activity4_digital_signature/tests/test_signature.py::test_multibyte_unicode_characters PASSED [ 83%]
+activity4_digital_signature/tests/test_signature.py::test_verify_signature_invalid_public_key PASSED [ 88%]
+activity4_digital_signature/tests/test_signature.py::test_cli_run_demo PASSED [ 94%]
+activity4_digital_signature/tests/test_signature.py::test_cli_demo_tamper PASSED [100%]
+
+============================= 18 passed in 0.31s ==============================
+
+=== CLI DEMONSTRATION 1: RSA-PSS DIGITAL SIGNATURE GENERATION & VERIFICATION ===
+
+================================================================================
+      CNS ACTIVITY 4: RSA-PSS DIGITAL SIGNATURE DEMONSTRATION
+================================================================================
+Message                : Academic CNS Signature 2026
+Hash Algorithm         : SHA-256
+Signature Scheme       : RSA-PSS (MGF1 with SHA-256, salt=MAX_LENGTH)
+Public Key Modulus     : 2048 bits (e = 65537)
+Public Key Fingerprint : 8ad756added8cb699ebeb8b871839e98788831b89b11fec0f46fecda611d7896
+Signature (Base64)     : mlNRsH9EELlaTxjaRrIinzSz7Kq7U15v30sT6SXq0isVOU3rquNRUb7OZ2CH... (256 bytes)
+Signature (Hex Sample) : 9A5351B07F4410B95A4F18DA46B2229F34B3ECAABB535E6FDF4B13E925EAD22B...
+--------------------------------------------------------------------------------
+Verification Result    : VALID (Authenticity & Integrity Confirmed)
+
+================================================================================
+                    ALGORITHM PRINCIPLE & SECURITY ANALYSIS
+================================================================================
+1. Working Principle & The Three Cryptographic Roles:
+   - Hashing (SHA-256):
+       Arbitrary-length message M is compressed into a 256-bit fixed-size digest h.
+       Hashing ensures efficiency (signing a 32-byte digest rather than megabytes
+       of text) and cryptographic collision resistance.
+   - Private-Key Signing:
+       The signer uses their private key (d, n) with RSA-PSS padding to compute:
+       S = (PSS(h))^d mod n
+       Because d is strictly secret, only the legitimate owner can produce S.
+   - Public-Key Verification:
+       Any recipient or third party verifies S using the public key (e, n):
+       Recovers PSS(h) from S^e mod n and checks that it matches SHA-256(M).
+       Verification requires NO access to the secret private key.
+
+2. Security Properties Provided:
+   - Authenticity:
+       Assures the receiver that the message was signed by the entity possessing
+       the private key corresponding to the advertised public key.
+   - Integrity:
+       Guarantees that the message has not been altered, inserted, or corrupted
+       in transit. Modifying even a single bit of M alters SHA-256(M) and fails verification.
+   - Non-Repudiation:
+       The signer cannot credibly deny creating the signature, provided the
+       private key remained strictly confidential and uncompromised.
+
+3. CRITICAL DISTINCTIONS:
+   a. Digital Signatures vs. Encryption:
+      * Encryption provides CONFIDENTIALITY (conceals message content).
+      * Digital Signatures provide AUTHENTICITY and INTEGRITY (message is plaintext).
+      * Signing a message DOES NOT encrypt or hide its contents!
+   b. Key Possession vs. Real-World Identity:
+      * A valid mathematical signature proves possession of the PRIVATE KEY.
+      * It does NOT automatically prove a physical human or corporate identity.
+      * Binding public keys to verified real-world identities requires Public Key
+        Infrastructure (PKI), Digital Certificates (X.509), and Certificate Authorities (CAs).
+
+4. Advantages of RSA-PSS over Legacy PKCS#1 v1.5:
+   - Provably secure: RSA-PSS is proven secure in the Random Oracle Model.
+   - Probabilistic: Employs randomized salt during padding, defeating chosen-message
+     attacks and ensuring every signature is distinct even for identical messages.
+================================================================================
+
+
+=== CLI DEMONSTRATION 2: TAMPER DETECTION & KEY MISMATCH REJECTION ===
+
+================================================================================
+      DEMONSTRATION: DIGITAL SIGNATURE INTEGRITY & TAMPER DETECTION
+================================================================================
+Original Message       : Authorise payment of 5000 INR to Student Club.
+Tampered Message       : Authorise payment of 50000 INR to Student Club.
+--------------------------------------------------------------------------------
+1. Authentic Message + Original Signature : VALID [Passed]
+2. Tampered Message + Original Signature  : INVALID [Tampering Detected!]
+3. Original Message + Corrupted Signature : INVALID [Corruption Detected!]
+4. Original Message + Unrelated Public Key: INVALID [Key Mismatch Detected!]
+--------------------------------------------------------------------------------
+Conclusion: Any modification of the message, signature corruption, or key mismatch
+immediately invalidates the digital signature, providing strict integrity assurance.
+================================================================================
+
+
+=== CLI DEMONSTRATION 3: ROOT DISPATCHER INVOCATION (main.py activity4) ===
+
+================================================================================
+      CNS ACTIVITY 4: RSA-PSS DIGITAL SIGNATURE DEMONSTRATION
+================================================================================
+Message                : Multibyte signature: Cryptography Zurich & Tokyo
+Hash Algorithm         : SHA-256
+Signature Scheme       : RSA-PSS (MGF1 with SHA-256, salt=MAX_LENGTH)
+Public Key Modulus     : 2048 bits (e = 65537)
+Public Key Fingerprint : 9c5513caba08428dfffbab6cc1f29b963ecf503b983ff0a93d3845bfb2b77702
+Signature (Base64)     : cIBlKOqTDpglxXCfrUBn8HnJJaWypzJJLMNzIHys2NqyRISjmB/y2/zYqrVf... (256 bytes)
+Signature (Hex Sample) : 70806528EA930E9825C5709FAD4067F079C925A5B2A732492CC373207CACD8DA...
+--------------------------------------------------------------------------------
+Verification Result    : VALID (Authenticity & Integrity Confirmed)
+
+================================================================================
+                    ALGORITHM PRINCIPLE & SECURITY ANALYSIS
+================================================================================
+1. Working Principle & The Three Cryptographic Roles:
+   - Hashing (SHA-256):
+       Arbitrary-length message M is compressed into a 256-bit fixed-size digest h.
+       Hashing ensures efficiency (signing a 32-byte digest rather than megabytes
+       of text) and cryptographic collision resistance.
+   - Private-Key Signing:
+       The signer uses their private key (d, n) with RSA-PSS padding to compute:
+       S = (PSS(h))^d mod n
+       Because d is strictly secret, only the legitimate owner can produce S.
+   - Public-Key Verification:
+       Any recipient or third party verifies S using the public key (e, n):
+       Recovers PSS(h) from S^e mod n and checks that it matches SHA-256(M).
+       Verification requires NO access to the secret private key.
+
+2. Security Properties Provided:
+   - Authenticity:
+       Assures the receiver that the message was signed by the entity possessing
+       the private key corresponding to the advertised public key.
+   - Integrity:
+       Guarantees that the message has not been altered, inserted, or corrupted
+       in transit. Modifying even a single bit of M alters SHA-256(M) and fails verification.
+   - Non-Repudiation:
+       The signer cannot credibly deny creating the signature, provided the
+       private key remained strictly confidential and uncompromised.
+
+3. CRITICAL DISTINCTIONS:
+   a. Digital Signatures vs. Encryption:
+      * Encryption provides CONFIDENTIALITY (conceals message content).
+      * Digital Signatures provide AUTHENTICITY and INTEGRITY (message is plaintext).
+      * Signing a message DOES NOT encrypt or hide its contents!
+   b. Key Possession vs. Real-World Identity:
+      * A valid mathematical signature proves possession of the PRIVATE KEY.
+      * It does NOT automatically prove a physical human or corporate identity.
+      * Binding public keys to verified real-world identities requires Public Key
+        Infrastructure (PKI), Digital Certificates (X.509), and Certificate Authorities (CAs).
+
+4. Advantages of RSA-PSS over Legacy PKCS#1 v1.5:
+   - Provably secure: RSA-PSS is proven secure in the Random Oracle Model.
+   - Probabilistic: Employs randomized salt during padding, defeating chosen-message
+     attacks and ensuring every signature is distinct even for identical messages.
+================================================================================
+

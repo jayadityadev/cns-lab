@@ -1,0 +1,273 @@
+﻿=== AUTOMATED TEST EXECUTION RECORD ===
+============================= test session starts =============================
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.7.0 -- D:\Codebase\cns\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\Codebase\cns
+configfile: pyproject.toml
+collecting ... collected 17 items
+
+activity3_one_time_pad/tests/test_otp.py::test_generate_key_length PASSED [  5%]
+activity3_one_time_pad/tests/test_otp.py::test_generate_key_independence PASSED [ 11%]
+activity3_one_time_pad/tests/test_otp.py::test_generate_key_invalid_length PASSED [ 17%]
+activity3_one_time_pad/tests/test_otp.py::test_xor_bytes_known_vector PASSED [ 23%]
+activity3_one_time_pad/tests/test_otp.py::test_xor_bytes_mathematical_properties PASSED [ 29%]
+activity3_one_time_pad/tests/test_otp.py::test_xor_bytes_length_mismatch PASSED [ 35%]
+activity3_one_time_pad/tests/test_otp.py::test_xor_bytes_invalid_types PASSED [ 41%]
+activity3_one_time_pad/tests/test_otp.py::test_encrypt_decrypt_known_vector PASSED [ 47%]
+activity3_one_time_pad/tests/test_otp.py::test_encrypt_accepts_raw_bytes PASSED [ 52%]
+activity3_one_time_pad/tests/test_otp.py::test_encrypt_decrypt_random_key_round_trip PASSED [ 58%]
+activity3_one_time_pad/tests/test_otp.py::test_encrypt_invalid_types PASSED [ 64%]
+activity3_one_time_pad/tests/test_otp.py::test_empty_message PASSED      [ 70%]
+activity3_one_time_pad/tests/test_otp.py::test_multibyte_utf8_characters PASSED [ 76%]
+activity3_one_time_pad/tests/test_otp.py::test_decrypt_with_incorrect_key PASSED [ 82%]
+activity3_one_time_pad/tests/test_otp.py::test_two_time_pad_vulnerability PASSED [ 88%]
+activity3_one_time_pad/tests/test_otp.py::test_cli_run_demo PASSED       [ 94%]
+activity3_one_time_pad/tests/test_otp.py::test_cli_demo_key_reuse PASSED [100%]
+
+============================= 17 passed in 0.06s ==============================
+
+=== CLI DEMONSTRATION 1: RANDOM KEY GENERATION (CSPRNG) ===
+
+================================================================================
+           CNS ACTIVITY 3: ONE-TIME PAD (OTP) DEMONSTRATION
+================================================================================
+Original Plaintext     : Top Secret CNS Dispatch 2026!
+Plaintext UTF-8 Bytes  : 29 bytes
+Generated Random Key   : D7AE11B8344504F792B9B4BAF8C36A3B848DF10B18F5436836D6ACCF8C (Length: 29 bytes)
+Encrypted Ciphertext   : 83C1619867206785F7CD94F9B6904A7FEDFE816A6C962B4804E69EF9AD (Length: 29 bytes)
+Recovered Plaintext    : Top Secret CNS Dispatch 2026!
+--------------------------------------------------------------------------------
+Round-Trip Verified    : SUCCESS (Original == Recovered)
+
+[!] EDUCATIONAL NOTICE:
+    Printing the secret key above is strictly for academic demonstration.
+    In production cryptography, exposing the key on terminal output completely
+    destroys confidentiality and violates the secrecy requirement.
+
+================================================================================
+                    ALGORITHM PRINCIPLE & SECURITY ANALYSIS
+================================================================================
+1. Working Principle & Mathematical Operation:
+   - The One-Time Pad (OTP) represents the theoretical pinnacle of symmetric encryption.
+   - Plaintext message M is represented as a sequence of bytes (e.g. UTF-8).
+   - An equally-sized key K of uniformly random bytes is generated using a
+     Cryptographically Secure Pseudo-Random Number Generator (CSPRNG).
+   - Encryption & Decryption use bitwise / bytewise Exclusive-OR (XOR, denoted ^):
+       * Encryption: C_i = M_i ^ K_i
+       * Decryption: M'_i = C_i ^ K_i = (M_i ^ K_i) ^ K_i = M_i
+   - XOR is its own mathematical inverse; no separate decryption inverse algorithm is required.
+
+2. Shannon's Theorem & Perfect Secrecy:
+   - In 1949, Claude Shannon proved that OTP provides INFORMATION-THEORETIC
+     PERFECT SECRECY (unconditional secrecy):
+       P(M = m | C = c) = P(M = m)
+   - Observing the ciphertext provides ZERO statistical information to an adversary
+     about the underlying message, regardless of infinite computing power or time.
+   - Every possible plaintext of length L is equally likely to be the decryption
+     under some valid key pad K in the keyspace.
+
+3. Mandatory Conditions for Perfect Secrecy:
+   To achieve perfect secrecy, ALL FIVE conditions must be strictly satisfied:
+     1. The key must be genuinely, uniformly random (P(K=k) = 1 / 256^L).
+     2. The key must be at least as long as the message being encrypted.
+     3. The key must remain completely secret from all third parties.
+     4. The key must be used STRICTLY ONCE (never reused or recycled).
+     5. The communicating parties must securely exchange and protect the key pad.
+
+4. Catastrophic Failure of Key Reuse (Two-Time Pad Attack):
+   - If the same key K is used to encrypt two different messages M1 and M2:
+       C1 = M1 ^ K
+       C2 = M2 ^ K
+   - An eavesdropper simply XORs the two ciphertexts together:
+       C1 ^ C2 = (M1 ^ K) ^ (M2 ^ K) = M1 ^ M2
+   - The key cancels out completely!
+   - The XOR sum of two natural language texts can be readily decrypted using
+     statistical letter frequencies and 'crib dragging' (testing common words).
+
+5. Real-World Key-Management Limitations:
+   - Key Distribution Bottleneck:
+       Distributing a truly random key pad as large as the data securely requires
+       an already secure channel (a physical courier or quantum key distribution).
+   - Storage & Entropy Exhaustion:
+       Encrypting 1 Terabyte of data requires 1 Terabyte of truly random key bytes.
+   - Synchronization & Destruction:
+       Both sender and receiver must track pad offsets; consumed pages must be
+       physically destroyed to prevent retrospective compromise.
+
+6. Historical Application:
+   - The Washington-Moscow "Red Telephone" hotline teletype link (established 1963)
+     used one-time tape pads delivered securely via diplomatic couriers.
+================================================================================
+
+
+=== CLI DEMONSTRATION 2: DETERMINISTIC FIXED VECTOR KEY ===
+
+================================================================================
+           CNS ACTIVITY 3: ONE-TIME PAD (OTP) DEMONSTRATION
+================================================================================
+Original Plaintext     : CNS 2026
+Plaintext UTF-8 Bytes  : 8 bytes
+Generated Random Key   : AABBCCDDEEFF1122 (Length: 8 bytes)
+Encrypted Ciphertext   : E9F59FFDDCCF2314 (Length: 8 bytes)
+Recovered Plaintext    : CNS 2026
+--------------------------------------------------------------------------------
+Round-Trip Verified    : SUCCESS (Original == Recovered)
+
+[!] EDUCATIONAL NOTICE:
+    Printing the secret key above is strictly for academic demonstration.
+    In production cryptography, exposing the key on terminal output completely
+    destroys confidentiality and violates the secrecy requirement.
+
+================================================================================
+                    ALGORITHM PRINCIPLE & SECURITY ANALYSIS
+================================================================================
+1. Working Principle & Mathematical Operation:
+   - The One-Time Pad (OTP) represents the theoretical pinnacle of symmetric encryption.
+   - Plaintext message M is represented as a sequence of bytes (e.g. UTF-8).
+   - An equally-sized key K of uniformly random bytes is generated using a
+     Cryptographically Secure Pseudo-Random Number Generator (CSPRNG).
+   - Encryption & Decryption use bitwise / bytewise Exclusive-OR (XOR, denoted ^):
+       * Encryption: C_i = M_i ^ K_i
+       * Decryption: M'_i = C_i ^ K_i = (M_i ^ K_i) ^ K_i = M_i
+   - XOR is its own mathematical inverse; no separate decryption inverse algorithm is required.
+
+2. Shannon's Theorem & Perfect Secrecy:
+   - In 1949, Claude Shannon proved that OTP provides INFORMATION-THEORETIC
+     PERFECT SECRECY (unconditional secrecy):
+       P(M = m | C = c) = P(M = m)
+   - Observing the ciphertext provides ZERO statistical information to an adversary
+     about the underlying message, regardless of infinite computing power or time.
+   - Every possible plaintext of length L is equally likely to be the decryption
+     under some valid key pad K in the keyspace.
+
+3. Mandatory Conditions for Perfect Secrecy:
+   To achieve perfect secrecy, ALL FIVE conditions must be strictly satisfied:
+     1. The key must be genuinely, uniformly random (P(K=k) = 1 / 256^L).
+     2. The key must be at least as long as the message being encrypted.
+     3. The key must remain completely secret from all third parties.
+     4. The key must be used STRICTLY ONCE (never reused or recycled).
+     5. The communicating parties must securely exchange and protect the key pad.
+
+4. Catastrophic Failure of Key Reuse (Two-Time Pad Attack):
+   - If the same key K is used to encrypt two different messages M1 and M2:
+       C1 = M1 ^ K
+       C2 = M2 ^ K
+   - An eavesdropper simply XORs the two ciphertexts together:
+       C1 ^ C2 = (M1 ^ K) ^ (M2 ^ K) = M1 ^ M2
+   - The key cancels out completely!
+   - The XOR sum of two natural language texts can be readily decrypted using
+     statistical letter frequencies and 'crib dragging' (testing common words).
+
+5. Real-World Key-Management Limitations:
+   - Key Distribution Bottleneck:
+       Distributing a truly random key pad as large as the data securely requires
+       an already secure channel (a physical courier or quantum key distribution).
+   - Storage & Entropy Exhaustion:
+       Encrypting 1 Terabyte of data requires 1 Terabyte of truly random key bytes.
+   - Synchronization & Destruction:
+       Both sender and receiver must track pad offsets; consumed pages must be
+       physically destroyed to prevent retrospective compromise.
+
+6. Historical Application:
+   - The Washington-Moscow "Red Telephone" hotline teletype link (established 1963)
+     used one-time tape pads delivered securely via diplomatic couriers.
+================================================================================
+
+
+=== CLI DEMONSTRATION 3: CATASTROPHIC TWO-TIME PAD ATTACK ===
+
+================================================================================
+           DEMONSTRATION: CATASTROPHIC TWO-TIME PAD ATTACK
+================================================================================
+Plaintext 1 (M1)       : ATTACK AT DAWN!
+Plaintext 2 (M2)       : DEFEND THE WALL
+Shared Reused Key (Hex): 9346632884D983DC411D0E62623BC6
+Ciphertext 1 (C1 Hex)  : D2123769C792A39D153D4A233575E7
+Ciphertext 2 (C2 Hex)  : D703256DCA9DA38809582E3523778A
+--------------------------------------------------------------------------------
+Adversary computes C1 ^ C2:
+C1 ^ C2 (Hex)          : 051112040D0F00151C65641616026D
+M1 ^ M2 (Hex)          : 051112040D0F00151C65641616026D
+Key Canceled Out?      : YES (C1 ^ C2 == M1 ^ M2)
+
+Conclusion: Reusing a One-Time Pad key destroys perfect secrecy entirely,
+allowing an eavesdropper to recover the plaintext difference without knowing the key!
+================================================================================
+
+
+=== CLI DEMONSTRATION 4: MULTIBYTE UTF-8 DISPATCHER INVOCATION (main.py activity3) ===
+
+================================================================================
+           CNS ACTIVITY 3: ONE-TIME PAD (OTP) DEMONSTRATION
+================================================================================
+Original Plaintext     : Multibyte: Cryptography Zurich & Tokyo
+Plaintext UTF-8 Bytes  : 38 bytes
+Generated Random Key   : 190F039F569EEA5398850DC8916191174D1214ACD89FE8D2B2D221D6CE08B3580169E650036D (Length: 38 bytes)
+Encrypted Ciphertext   : 547A6FEB3FFC9327FDBF2D8BE318E163227566CDA8F791F2E8A753BFAD60937E213D893B7A02 (Length: 38 bytes)
+Recovered Plaintext    : Multibyte: Cryptography Zurich & Tokyo
+--------------------------------------------------------------------------------
+Round-Trip Verified    : SUCCESS (Original == Recovered)
+
+[!] EDUCATIONAL NOTICE:
+    Printing the secret key above is strictly for academic demonstration.
+    In production cryptography, exposing the key on terminal output completely
+    destroys confidentiality and violates the secrecy requirement.
+
+================================================================================
+                    ALGORITHM PRINCIPLE & SECURITY ANALYSIS
+================================================================================
+1. Working Principle & Mathematical Operation:
+   - The One-Time Pad (OTP) represents the theoretical pinnacle of symmetric encryption.
+   - Plaintext message M is represented as a sequence of bytes (e.g. UTF-8).
+   - An equally-sized key K of uniformly random bytes is generated using a
+     Cryptographically Secure Pseudo-Random Number Generator (CSPRNG).
+   - Encryption & Decryption use bitwise / bytewise Exclusive-OR (XOR, denoted ^):
+       * Encryption: C_i = M_i ^ K_i
+       * Decryption: M'_i = C_i ^ K_i = (M_i ^ K_i) ^ K_i = M_i
+   - XOR is its own mathematical inverse; no separate decryption inverse algorithm is required.
+
+2. Shannon's Theorem & Perfect Secrecy:
+   - In 1949, Claude Shannon proved that OTP provides INFORMATION-THEORETIC
+     PERFECT SECRECY (unconditional secrecy):
+       P(M = m | C = c) = P(M = m)
+   - Observing the ciphertext provides ZERO statistical information to an adversary
+     about the underlying message, regardless of infinite computing power or time.
+   - Every possible plaintext of length L is equally likely to be the decryption
+     under some valid key pad K in the keyspace.
+
+3. Mandatory Conditions for Perfect Secrecy:
+   To achieve perfect secrecy, ALL FIVE conditions must be strictly satisfied:
+     1. The key must be genuinely, uniformly random (P(K=k) = 1 / 256^L).
+     2. The key must be at least as long as the message being encrypted.
+     3. The key must remain completely secret from all third parties.
+     4. The key must be used STRICTLY ONCE (never reused or recycled).
+     5. The communicating parties must securely exchange and protect the key pad.
+
+4. Catastrophic Failure of Key Reuse (Two-Time Pad Attack):
+   - If the same key K is used to encrypt two different messages M1 and M2:
+       C1 = M1 ^ K
+       C2 = M2 ^ K
+   - An eavesdropper simply XORs the two ciphertexts together:
+       C1 ^ C2 = (M1 ^ K) ^ (M2 ^ K) = M1 ^ M2
+   - The key cancels out completely!
+   - The XOR sum of two natural language texts can be readily decrypted using
+     statistical letter frequencies and 'crib dragging' (testing common words).
+
+5. Real-World Key-Management Limitations:
+   - Key Distribution Bottleneck:
+       Distributing a truly random key pad as large as the data securely requires
+       an already secure channel (a physical courier or quantum key distribution).
+   - Storage & Entropy Exhaustion:
+       Encrypting 1 Terabyte of data requires 1 Terabyte of truly random key bytes.
+   - Synchronization & Destruction:
+       Both sender and receiver must track pad offsets; consumed pages must be
+       physically destroyed to prevent retrospective compromise.
+
+6. Historical Application:
+   - The Washington-Moscow "Red Telephone" hotline teletype link (established 1963)
+     used one-time tape pads delivered securely via diplomatic couriers.
+================================================================================
+
+
+=== CLI DEMONSTRATION 5: KEY LENGTH MISMATCH REJECTION ===
+Error: Key length (2 bytes) does not match message length (4 bytes).

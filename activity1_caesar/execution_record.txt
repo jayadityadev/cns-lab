@@ -1,0 +1,184 @@
+﻿=== AUTOMATED TEST EXECUTION RECORD ===
+============================= test session starts =============================
+platform win32 -- Python 3.14.6, pytest-9.1.1, pluggy-1.7.0 -- D:\Codebase\cns\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\Codebase\cns
+configfile: pyproject.toml
+collecting ... collected 17 items
+
+activity1_caesar/tests/test_caesar.py::test_normalize_key_standard PASSED [  5%]
+activity1_caesar/tests/test_caesar.py::test_normalize_key_zero PASSED    [ 11%]
+activity1_caesar/tests/test_caesar.py::test_normalize_key_twenty_five PASSED [ 17%]
+activity1_caesar/tests/test_caesar.py::test_normalize_key_greater_than_twenty_five PASSED [ 23%]
+activity1_caesar/tests/test_caesar.py::test_normalize_key_negative PASSED [ 29%]
+activity1_caesar/tests/test_caesar.py::test_normalize_key_invalid_types PASSED [ 35%]
+activity1_caesar/tests/test_caesar.py::test_encrypt_known_answers PASSED [ 41%]
+activity1_caesar/tests/test_caesar.py::test_encrypt_wrap_boundaries PASSED [ 47%]
+activity1_caesar/tests/test_caesar.py::test_encrypt_key_variations PASSED [ 52%]
+activity1_caesar/tests/test_caesar.py::test_encrypt_invalid_plaintext_type PASSED [ 58%]
+activity1_caesar/tests/test_caesar.py::test_encrypt_empty_message PASSED [ 64%]
+activity1_caesar/tests/test_caesar.py::test_encrypt_non_alphabetic_preservation PASSED [ 70%]
+activity1_caesar/tests/test_caesar.py::test_encrypt_repeated_characters PASSED [ 76%]
+activity1_caesar/tests/test_caesar.py::test_decrypt_known_answers PASSED [ 82%]
+activity1_caesar/tests/test_caesar.py::test_round_trip_property PASSED   [ 88%]
+activity1_caesar/tests/test_caesar.py::test_decrypt_invalid_types PASSED [ 94%]
+activity1_caesar/tests/test_caesar.py::test_cli_run_demo PASSED          [100%]
+
+============================= 17 passed in 0.06s ==============================
+
+=== CLI DEMONSTRATION 1: CLASSIC SHIFT (KEY = 3) ===
+
+================================================================================
+           CNS ACTIVITY 1: CAESAR CIPHER DEMONSTRATION
+================================================================================
+Original Plaintext : CNS Activity 1: Caesar Cipher
+Input Key          : 3 (Normalized shift: 3)
+Encrypted Ciphertext: FQV Dfwlylwb 1: Fdhvdu Flskhu
+Recovered Plaintext : CNS Activity 1: Caesar Cipher
+--------------------------------------------------------------------------------
+Round-Trip Verified: SUCCESS (Original == Recovered)
+
+================================================================================
+                    ALGORITHM PRINCIPLE & SECURITY ANALYSIS
+================================================================================
+1. Working Principle:
+   - The Caesar Cipher is a classical monoalphabetic substitution cipher.
+   - Each plaintext letter is shifted down the alphabet by a fixed integer key K.
+   - Mathematical Transformation:
+       * Encryption: C_i = (P_i + K) mod 26
+       * Decryption: P_i = (C_i - K) mod 26
+   - Case of alphabetic characters is preserved; non-alphabetic characters
+     (spaces, digits, punctuation) remain unshifted.
+
+2. Security Aspects & Cryptanalysis:
+   - Keyspace Size: |K| = 26 (only 25 non-trivial keys).
+   - Vulnerability to Exhaustive Key Search (Brute Force):
+       An attacker can test all 25 possible shifts in milliseconds.
+   - Vulnerability to Frequency Analysis:
+       Letter frequency distribution is preserved exactly, merely rotated.
+       In English, 'E' is the most frequent letter (~12.7%), followed by 'T', 'A', 'O'.
+       The shift is trivially discovered by aligning the peak frequency.
+   - MODERN SECURITY WARNING:
+       The Caesar Cipher provides NO computational security and is COMPLETELY INSECURE for modern communications.
+
+3. Advantages:
+   - Simple to understand, implement, and compute mentally.
+   - Requires minimal computational resources.
+   - Serves as an educational baseline for substitution ciphers.
+
+4. Limitations:
+   - Extremely small keyspace vulnerable to instant brute-force attack.
+   - Preserves underlying language statistics and character patterns.
+   - Easily broken with ciphertext-only attacks.
+
+5. Applications:
+   - Historical: Used by Julius Caesar (~58 BC) for military correspondence (shift of 3).
+   - Modern: ROT13 (shift of 13) for basic spoiler hiding and text obfuscation in online forums.
+================================================================================
+
+
+=== CLI DEMONSTRATION 2: KEY NORMALIZATION (KEY = 29 -> 3) & WRAPPING ===
+
+================================================================================
+           CNS ACTIVITY 1: CAESAR CIPHER DEMONSTRATION
+================================================================================
+Original Plaintext : Wrap Test: XYZ xyz 123
+Input Key          : 29 (Normalized shift: 3)
+Encrypted Ciphertext: Zuds Whvw: ABC abc 123
+Recovered Plaintext : Wrap Test: XYZ xyz 123
+--------------------------------------------------------------------------------
+Round-Trip Verified: SUCCESS (Original == Recovered)
+
+================================================================================
+                    ALGORITHM PRINCIPLE & SECURITY ANALYSIS
+================================================================================
+1. Working Principle:
+   - The Caesar Cipher is a classical monoalphabetic substitution cipher.
+   - Each plaintext letter is shifted down the alphabet by a fixed integer key K.
+   - Mathematical Transformation:
+       * Encryption: C_i = (P_i + K) mod 26
+       * Decryption: P_i = (C_i - K) mod 26
+   - Case of alphabetic characters is preserved; non-alphabetic characters
+     (spaces, digits, punctuation) remain unshifted.
+
+2. Security Aspects & Cryptanalysis:
+   - Keyspace Size: |K| = 26 (only 25 non-trivial keys).
+   - Vulnerability to Exhaustive Key Search (Brute Force):
+       An attacker can test all 25 possible shifts in milliseconds.
+   - Vulnerability to Frequency Analysis:
+       Letter frequency distribution is preserved exactly, merely rotated.
+       In English, 'E' is the most frequent letter (~12.7%), followed by 'T', 'A', 'O'.
+       The shift is trivially discovered by aligning the peak frequency.
+   - MODERN SECURITY WARNING:
+       The Caesar Cipher provides NO computational security and is COMPLETELY INSECURE for modern communications.
+
+3. Advantages:
+   - Simple to understand, implement, and compute mentally.
+   - Requires minimal computational resources.
+   - Serves as an educational baseline for substitution ciphers.
+
+4. Limitations:
+   - Extremely small keyspace vulnerable to instant brute-force attack.
+   - Preserves underlying language statistics and character patterns.
+   - Easily broken with ciphertext-only attacks.
+
+5. Applications:
+   - Historical: Used by Julius Caesar (~58 BC) for military correspondence (shift of 3).
+   - Modern: ROT13 (shift of 13) for basic spoiler hiding and text obfuscation in online forums.
+================================================================================
+
+
+=== CLI DEMONSTRATION 3: ROT13 PANGRAM (KEY = 13) ===
+
+================================================================================
+           CNS ACTIVITY 1: CAESAR CIPHER DEMONSTRATION
+================================================================================
+Original Plaintext : The quick brown fox jumps over the lazy dog!
+Input Key          : 13 (Normalized shift: 13)
+Encrypted Ciphertext: Gur dhvpx oebja sbk whzcf bire gur ynml qbt!
+Recovered Plaintext : The quick brown fox jumps over the lazy dog!
+--------------------------------------------------------------------------------
+Round-Trip Verified: SUCCESS (Original == Recovered)
+
+================================================================================
+                    ALGORITHM PRINCIPLE & SECURITY ANALYSIS
+================================================================================
+1. Working Principle:
+   - The Caesar Cipher is a classical monoalphabetic substitution cipher.
+   - Each plaintext letter is shifted down the alphabet by a fixed integer key K.
+   - Mathematical Transformation:
+       * Encryption: C_i = (P_i + K) mod 26
+       * Decryption: P_i = (C_i - K) mod 26
+   - Case of alphabetic characters is preserved; non-alphabetic characters
+     (spaces, digits, punctuation) remain unshifted.
+
+2. Security Aspects & Cryptanalysis:
+   - Keyspace Size: |K| = 26 (only 25 non-trivial keys).
+   - Vulnerability to Exhaustive Key Search (Brute Force):
+       An attacker can test all 25 possible shifts in milliseconds.
+   - Vulnerability to Frequency Analysis:
+       Letter frequency distribution is preserved exactly, merely rotated.
+       In English, 'E' is the most frequent letter (~12.7%), followed by 'T', 'A', 'O'.
+       The shift is trivially discovered by aligning the peak frequency.
+   - MODERN SECURITY WARNING:
+       The Caesar Cipher provides NO computational security and is COMPLETELY INSECURE for modern communications.
+
+3. Advantages:
+   - Simple to understand, implement, and compute mentally.
+   - Requires minimal computational resources.
+   - Serves as an educational baseline for substitution ciphers.
+
+4. Limitations:
+   - Extremely small keyspace vulnerable to instant brute-force attack.
+   - Preserves underlying language statistics and character patterns.
+   - Easily broken with ciphertext-only attacks.
+
+5. Applications:
+   - Historical: Used by Julius Caesar (~58 BC) for military correspondence (shift of 3).
+   - Modern: ROT13 (shift of 13) for basic spoiler hiding and text obfuscation in online forums.
+================================================================================
+
+
+=== CLI DEMONSTRATION 4: INVALID KEY HANDLING ===
+usage: cli.py [-h] [-p PLAINTEXT] [-k KEY] [--explanation-only]
+cli.py: error: argument -k/--key: invalid int value: 'abc'

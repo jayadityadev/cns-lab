@@ -1,0 +1,32 @@
+[project]
+name = "cns"
+version = "0.1.0"
+description = "Cryptography and Network Security (CNS) Laboratory Suite (Batch: 2026_CNS_A_01)"
+readme = "README.md"
+authors = [
+    { name = "Jayaditya Dev" },
+    { name = "Durgashree M" },
+    { name = "Aryaman Tiwari" },
+    { name = "Chirag T" },
+]
+requires-python = ">=3.14"
+dependencies = [
+    "cryptography>=50.0.2",
+    "rich>=15.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = [
+    "activity1_caesar/tests",
+    "activity2_vigenere/tests",
+    "activity3_one_time_pad/tests",
+    "activity4_digital_signature/tests",
+]
+
+
