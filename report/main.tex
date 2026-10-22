@@ -1,0 +1,957 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=0.9in,top=1in,bottom=1in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs,tabularx,multirow,longtable}
+\usepackage{xcolor,colortbl}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{hyperref}
+
+% Color definitions
+\definecolor{navyblue}{RGB}{16, 44, 87}
+\definecolor{slateborder}{RGB}{53, 89, 143}
+\definecolor{tableheader}{RGB}{230, 238, 248}
+\definecolor{tablealt}{RGB}{248, 250, 253}
+\definecolor{codebg}{RGB}{244, 246, 249}
+\definecolor{calloutbg}{RGB}{253, 247, 247}
+\definecolor{calloutborder}{RGB}{185, 28, 28}
+\definecolor{notebg}{RGB}{240, 249, 255}
+\definecolor{noteborder}{RGB}{3, 105, 161}
+\definecolor{passgreen}{RGB}{22, 101, 52}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=navyblue,
+    citecolor=navyblue,
+    urlcolor=slateborder,
+    pdftitle={Cryptography and Network Security Technical Report - Batch 2026_CNS_A_01},
+    pdfauthor={Jayaditya Dev, Durgashree M, Aryaman Tiwari, Chirag T}
+}
+
+% Header and Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{gray!80}{Department of Computer Science \& Engineering $\vert$ KSIT}}
+\fancyhead[R]{\small\textcolor{gray!80}{Batch 2026\_CNS\_A\_01 $\vert$ CNS Technical Report}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Code Listing Settings
+\lstset{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{slateborder!40},
+    keywordstyle=\color{blue!80!black}\bfseries,
+    stringstyle=\color{red!70!black},
+    commentstyle=\color{green!50!black}\itshape,
+    numbers=none,
+    tabsize=4,
+    showstringspaces=false
+}
+
+\begin{document}
+
+% ==============================================================================
+% 1. TITLE PAGE
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.8cm}
+    
+    {\Large\textbf{KAMMAVARI SANGHAM INSTITUTE OF TECHNOLOGY}}\\[0.2cm]
+    {\normalsize (Affiliated to Visvesvaraya Technological University, Belagavi $\vert$ Approved by AICTE, New Delhi)}\\[0.15cm]
+    {\small Department of Computer Science \& Engineering}\\[0.2cm]
+    {\small Bengaluru -- 560109, Karnataka, India}\\[1.2cm]
+    
+    \rule{\linewidth}{1.2pt}\\[0.4cm]
+    {\Huge\textbf{\textcolor{navyblue}{Cryptography and Network Security}}}\\[0.3cm]
+    {\Large\textbf{Course Code: CNS $\vert$ Academic Year: 2026}}\\[0.25cm]
+    {\large\textit{Comprehensive Laboratory \& Technical Audit Report}}\\[0.2cm]
+    \rule{\linewidth}{1.2pt}\\[1.0cm]
+    
+    {\large\textbf{Assignment Title:}}\\[0.2cm]
+    {\LARGE\textbf{Implementation, Empirical Verification, and Cryptanalytic Evaluation of Classical and Modern Cryptographic Systems}}\\[0.8cm]
+    
+    {\normalsize\textbf{Batch Identifier:} \texttt{2026\_CNS\_A\_01}}\\[0.15cm]
+    {\normalsize\textbf{Activity Allocation:} Classical Substitution (CO1), Polyalphabetic Substitution (CO4),}\\[0.05cm]
+    {\normalsize Information-Theoretic Secrecy (CO3), and Digital Signatures (CO3)}\\[1.0cm]
+    
+    \begin{table}[h!]
+        \centering
+        \small
+        \begin{tabularx}{0.92\linewidth}{cllX}
+            \toprule
+            \rowcolor{tableheader}
+            \textbf{Sl. No.} & \textbf{USN} & \textbf{Student Name} & \textbf{Designated Laboratory Area} \\
+            \midrule
+            1 & \texttt{1KS23CS059} & \textbf{Jayaditya Dev} & Unified TUI Engine \& Activity 4 (RSA-PSS) \\
+            2 & \texttt{1KS23CS043} & \textbf{Durgashree M} & Activity 3 (One-Time Pad CSPRNG) \\
+            3 & \texttt{1KS23CS020} & \textbf{Aryaman Tiwari} & Activity 2 (Vigen\`ere Tabula Recta) \\
+            4 & \texttt{1KS23CS034} & \textbf{Chirag T} & Activity 1 (Caesar Modular Cipher) \\
+            \bottomrule
+        \end{tabularx}
+    \end{table}
+    
+    \vfill
+    {\normalsize Submission Date: Academic Term 2026}\\[0.1cm]
+    {\small Evaluation Scheme: Total 25 Marks (Part A Demonstration: 15 Marks $\vert$ Part B Technical Report: 10 Marks)}
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ==============================================================================
+% 2. ABSTRACT
+% ==============================================================================
+\section{Abstract}
+This technical report delivers a rigorous, empirical investigation and software audit of four fundamental cryptographic paradigms implemented for the Cryptography and Network Security course under Batch allocation \texttt{2026\_CNS\_A\_01}. The investigated systems span: (1) classical monoalphabetic substitution (Caesar Cipher), (2) polyalphabetic keyword substitution (Vigen\`ere Cipher), (3) information-theoretic symmetric stream encryption (One-Time Pad), and (4) industry-standard asymmetric authentication and integrity verification (RSA-PSS digital signatures with SHA-256). 
+
+Every cryptographic primitive was implemented natively in Python 3.14 without relying on high-level cryptographic abstractions for classical ciphers, while employing the rigorously audited, PyCA-backed \texttt{cryptography} engine for asymmetric primitives. All algorithms were subjected to automated verification comprising 69 distinct test cases spanning deterministic Known-Answer Tests (KAT), cyclic boundary conditions, malformed input handling, and negative tamper detection. All 69 tests executed successfully in 0.55 seconds with zero defects. Beyond functional implementation, this report provides formal cryptanalytic evaluations: exhaustive search analysis, frequency analysis, Kasiski examination, Friedman's Index of Coincidence, Shannon's unconditional secrecy theorem, the catastrophic Two-Time Pad vulnerability, and the architectural distinction between raw mathematical key pairs and Public Key Infrastructure (PKI). Genuine terminal transcripts and pipeline data flows establish that modern security requires provable cryptographic primitives rather than security through obscurity.
+
+% ==============================================================================
+% 3. INTRODUCTION AND OBJECTIVES
+% ==============================================================================
+\section{Introduction and Objectives}
+
+\subsection{Background and Cryptographic Problem}
+Data security in computer networks rests on four core pillars: confidentiality, integrity, authenticity, and non-repudiation. Historically, cryptographic systems sought confidentiality through character rearrangement or substitution. However, classical ciphers suffer from algebraic structure preservation and statistical predictability, allowing adversaries to recover secret messages with minimal effort. The transition to modern symmetric cryptography introduced information-theoretic secrecy, while the emergence of asymmetric cryptography solved the longstanding key-distribution paradox and introduced digital signatures capable of binding message origin to a verifiable identity.
+
+\subsection{Course Outcome Mapping and Specific Objectives}
+In accordance with the official course syllabus and topic distribution for Batch \texttt{2026\_CNS\_A\_01}, this work addresses three designated Course Outcomes (COs):
+\begin{enumerate}
+    \item \textbf{CO1 -- Classical Substitution Ciphers (Activity 1)}: Formulate, implement, and analyze monoalphabetic Caesar shifts; demonstrate modular normalization across arbitrary integer keys; evaluate vulnerability to exhaustive key search and unigram frequency analysis.
+    \item \textbf{CO4 -- Polyalphabetic and Matrix-Based Ciphers (Activity 2)}: Formulate and implement the Vigen\`ere cipher using the 26$\times$26 Tabula Recta; enforce strict key-stream advancement rules over non-alphabetic tokens; model cryptanalytic breakdown via Kasiski examination and Friedman's Index of Coincidence.
+    \item \textbf{CO3 -- Information-Theoretic Secrecy (Activity 3)}: Construct a bytewise One-Time Pad (OTP) using a Cryptographically Secure Pseudo-Random Number Generator (CSPRNG); prove Claude Shannon's 1949 theorem of perfect secrecy; demonstrate the empirical collapse of secrecy under key reuse (Two-Time Pad attack).
+    \item \textbf{CO3 -- Asymmetric Cryptography and Integrity (Activity 4)}: Implement a production-grade digital signature system using 2048-bit RSA keys and Probabilistic Signature Scheme (PSS) padding with SHA-256; demonstrate tamper detection; contrast mathematical signatures with Public Key Infrastructure (PKI).
+\end{enumerate}
+
+% ==============================================================================
+% 4. THEORETICAL BACKGROUND
+% ==============================================================================
+\section{Theoretical Background}
+
+\subsection{Activity 1: Caesar Cipher and the Ring $\mathbb{Z}_{26}$}
+The Caesar cipher is an additive monoalphabetic substitution cipher defined over the finite residue ring of integers modulo 26:
+\begin{equation}
+    \mathbb{Z}_{26} = \{0, 1, 2, \dots, 25\}
+\end{equation}
+The 26 uppercase Latin letters are mapped injectively onto $\mathbb{Z}_{26}$ via the bijection $\pi: \mathcal{A} \to \mathbb{Z}_{26}$ where $\pi(\text{'A'}) = 0, \pi(\text{'B'}) = 1, \dots, \pi(\text{'Z'}) = 25$. For any integer key $K \in \mathbb{Z}$, the encryption map $f_K: \mathbb{Z}_{26} \to \mathbb{Z}_{26}$ is defined by:
+\begin{equation}
+    C_i = f_K(P_i) = (P_i + K) \pmod{26}
+\end{equation}
+Because addition in $\mathbb{Z}_{26}$ forms an abelian group, the decryption map is the additive inverse:
+\begin{equation}
+    P_i = f_K^{-1}(C_i) = (C_i - K) \pmod{26} = (C_i + (-K \pmod{26})) \pmod{26}
+\end{equation}
+The Caesar cipher preserves the underlying letter frequencies of natural language because the permutation applied to each alphabet symbol is static throughout the plaintext.
+
+\subsection{Activity 2: Vigen\`ere Cipher and Polyalphabetic Mapping}
+The Vigen\`ere cipher addresses the frequency preservation of monoalphabetic ciphers by using polyalphabetic substitution. Instead of a single static shift, a sequence of shifts derived from an alphabetic keyword $K = (k_0, k_1, \dots, k_{L-1})$ of length $L$ is applied cyclically:
+\begin{equation}
+    C_i = (P_i + k_{i \pmod L}) \pmod{26}
+\end{equation}
+Decryption shifts backward using the matching key character:
+\begin{equation}
+    P_i = (C_i - k_{i \pmod L}) \pmod{26}
+\end{equation}
+This operation corresponds to looking up entries in a $26 \times 26$ grid called the \textbf{Tabula Recta}, where row $P_i$ and column $k_j$ intersect at character $C_i$. By cycling through $L$ distinct alphabets, the unigram frequency distribution of the plaintext is smoothed across the ciphertext.
+
+\subsection{Activity 3: One-Time Pad and Shannon's Perfect Secrecy}
+In 1949, Claude Shannon established the mathematical foundations of cryptography in his seminal paper \textit{"Communication Theory of Secrecy Systems"} \cite{shannon1949}. Shannon defined \textbf{perfect secrecy} (information-theoretic or unconditional secrecy) as the condition where the a posteriori probability distribution of the plaintext given the ciphertext is identical to its a priori probability distribution:
+\begin{equation}
+    \mathbb{P}(M = m \mid C = c) = \mathbb{P}(M = m) \quad \forall m \in \mathcal{M}, c \in \mathcal{C}
+\end{equation}
+Equivalently, expressed in terms of Shannon entropy $H(M)$:
+\begin{equation}
+    H(M \mid C) = H(M)
+\end{equation}
+Shannon proved that for a cipher to achieve perfect secrecy:
+\begin{equation}
+    H(K) \ge H(M) \implies |\mathcal{K}| \ge |\mathcal{M}|
+\end{equation}
+The One-Time Pad operates over byte vectors $M, K \in \{0, 1\}^8$ using bitwise Exclusive-OR (addition modulo 2):
+\begin{equation}
+    C = M \oplus K, \quad M' = C \oplus K = (M \oplus K) \oplus K = M \oplus (K \oplus K) = M \oplus \mathbf{0} = M
+\end{equation}
+For any observed ciphertext byte $c$ and any candidate plaintext byte $m^*$, there exists exactly one key $k^* = c \oplus m^*$. If $K$ is uniformly distributed over $\{0, 1\}^8$, then $\mathbb{P}(K = k^*) = 1/256$, rendering every plaintext equally probable regardless of adversarial computing capacity.
+
+\subsection{Activity 4: Digital Signatures and RSA-PSS}
+In asymmetric cryptography, a digital signature provides authenticity, message integrity, and non-repudiation. Unlike symmetric message authentication codes (MACs), digital signatures are publicly verifiable without revealing the signing secret.
+
+An RSA key pair consists of a public key $(e, n)$ and a private key $(d, n)$ where $n = p \cdot q$ for large primes $p, q$, and $e \cdot d \equiv 1 \pmod{\phi(n)}$. 
+To prevent homomorphic attacks and chosen-ciphertext vulnerabilities present in textbook RSA ($S = h^d \pmod n$), the \textbf{Probabilistic Signature Scheme (PSS)} (RFC 8017 / PKCS\#1 v2.1 \cite{rfc8017}) is utilized:
+\begin{enumerate}
+    \item \textbf{Hashing}: Message $M$ is hashed using SHA-256 to produce fixed digest $h = H(M) \in \{0, 1\}^{256}$.
+    \item \textbf{Encoding}: $h$ is combined with a cryptographically generated random salt of length $s_{len}$ through Mask Generation Function 1 (MGF1) to form encoded message representative $\mu \in \mathbb{Z}_n$.
+    \item \textbf{Exponentiation}: The signer computes signature $S$:
+    \begin{equation}
+        S = \mu^d \pmod n
+    \end{equation}
+    \item \textbf{Verification}: The verifier computes $\mu' = S^e \pmod n$, unpacks the PSS structure, and verifies that the extracted digest matches $H(M)$.
+\end{enumerate}
+
+% ==============================================================================
+% 5. WORKING PRINCIPLES AND STEP-BY-STEP TRACES
+% ==============================================================================
+\section{Working Principles and Mathematical Traces}
+
+\subsection{Trace 1: Caesar Cipher Encryption and Decryption}
+\textbf{Input Vector}: Plaintext $P =$ \texttt{"CNS 2026"}, Key $K = 29$.
+\begin{enumerate}
+    \item \textbf{Key Normalization}:
+    \begin{equation}
+        K_{\text{norm}} = 29 \pmod{26} = 3
+    \end{equation}
+    \item \textbf{Character-by-Character Transformation}:
+    \begin{itemize}
+        \item $P_0 = \text{'C'} \implies \pi('C') = 2$. $C_0 = (2 + 3) \pmod{26} = 5 \implies \text{'F'}$.
+        \item $P_1 = \text{'N'} \implies \pi('N') = 13$. $C_1 = (13 + 3) \pmod{26} = 16 \implies \text{'Q'}$.
+        \item $P_2 = \text{'S'} \implies \pi('S') = 18$. $C_2 = (18 + 3) \pmod{26} = 21 \implies \text{'V'}$.
+        \item $P_3 = \text{' '}, P_4 = \text{'2'}, P_5 = \text{'0'}, P_6 = \text{'2'}, P_7 = \text{'6'}$. All are non-alphabetic; preserved verbatim.
+    \end{itemize}
+    \textbf{Generated Ciphertext}: \texttt{"FQV 2026"}.
+    \item \textbf{Decryption}: Apply shift $-3 \pmod{26} = 23$:
+    \begin{itemize}
+        \item $C_0 = \text{'F'} \implies (5 + 23) \pmod{26} = 28 \pmod{26} = 2 \implies \text{'C'}$.
+    \end{itemize}
+    \textbf{Recovered Plaintext}: \texttt{"CNS 2026"} (Verified identical).
+\end{enumerate}
+
+\subsection{Trace 2: Vigen\`ere Polyalphabetic Stream Alignment}
+\textbf{Input Vector}: Plaintext $P =$ \texttt{"ATTACK AT DAWN!"}, Keyword $K =$ \texttt{"LEMON"}.
+The normalized keyword length is $L = 5$. The keyword shifts are: $\text{L}=11, \text{E}=4, \text{M}=12, \text{O}=14, \text{N}=13$.
+\begin{table}[h!]
+    \centering
+    \footnotesize
+    \begin{tabularx}{\linewidth}{cccccl}
+        \toprule
+        \rowcolor{tableheader}
+        \textbf{Index $i$} & \textbf{Char $P_i$} & \textbf{Key Char} & \textbf{Shift $k_j$} & \textbf{Formula $(P_i + k_j) \pmod{26}$} & \textbf{Result $C_i$} \\
+        \midrule
+        0 & 'A' (0)  & 'L' & 11 & $(0 + 11) \pmod{26} = 11$ & 'L' \\
+        1 & 'T' (19) & 'E' & 4  & $(19 + 4) \pmod{26} = 23$ & 'X' \\
+        2 & 'T' (19) & 'M' & 12 & $(19 + 12) \pmod{26} = 5$ & 'F' \\
+        3 & 'A' (0)  & 'O' & 14 & $(0 + 14) \pmod{26} = 14$ & 'O' \\
+        4 & 'C' (2)  & 'N' & 13 & $(2 + 13) \pmod{26} = 15$ & 'P' \\
+        5 & 'K' (10) & 'L' & 11 & $(10 + 11) \pmod{26} = 21$ & 'V' \\
+        6 & ' '      & --  & -- & \textit{Whitespace preserved; key paused} & ' ' \\
+        7 & 'A' (0)  & 'E' & 4  & $(0 + 4) \pmod{26} = 4$  & 'E' \\
+        8 & 'T' (19) & 'M' & 12 & $(19 + 12) \pmod{26} = 5$ & 'F' \\
+        9 & ' '      & --  & -- & \textit{Whitespace preserved; key paused} & ' ' \\
+        10 & 'D' (3) & 'O' & 14 & $(3 + 14) \pmod{26} = 17$ & 'R' \\
+        11 & 'A' (0) & 'N' & 13 & $(0 + 13) \pmod{26} = 13$ & 'N' \\
+        12 & 'W' (22)& 'L' & 11 & $(22 + 11) \pmod{26} = 7$ & 'H' \\
+        13 & 'N' (13)& 'E' & 4  & $(13 + 4) \pmod{26} = 17$ & 'R' \\
+        14 & '!'     & --  & -- & \textit{Punctuation preserved verbatim} & '!' \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+\textbf{Ciphertext Output}: \texttt{"LXFOPV EF RNHR!"}. Notice how the two 'A's at indices 0 and 7 map to 'L' and 'E' respectively, demonstrating polyalphabetic flattening.
+
+\subsection{Trace 3: One-Time Pad Bytewise XOR Transformation}
+\textbf{Input Vector}: Plaintext $M =$ \texttt{"CNS 2026"} (8 bytes UTF-8: \texttt{0x43 0x4E 0x53 0x20 0x32 0x30 0x32 0x36}).\\
+\textbf{Generated CSPRNG Key $K$}: \texttt{0x9A 0x2B 0x7F 0xE1 0x0C 0x88 0x64 0x19} (8 bytes).
+\begin{table}[h!]
+    \centering
+    \footnotesize
+    \begin{tabularx}{\linewidth}{cccccX}
+        \toprule
+        \rowcolor{tableheader}
+        \textbf{Byte \#} & \textbf{Char} & \textbf{Plaintext Byte} & \textbf{CSPRNG Key Byte} & \textbf{Bitwise XOR} & \textbf{Ciphertext Byte} \\
+        \midrule
+        1 & 'C' & \texttt{0x43} (\texttt{01000011}) & \texttt{0x9A} (\texttt{10011010}) & \texttt{01000011 $\oplus$ 10011010} & \texttt{0xD9} (\texttt{11011001}) \\
+        2 & 'N' & \texttt{0x4E} (\texttt{01001110}) & \texttt{0x2B} (\texttt{00101011}) & \texttt{01001110 $\oplus$ 00101011} & \texttt{0x65} (\texttt{01100101}) \\
+        3 & 'S' & \texttt{0x53} (\texttt{01010011}) & \texttt{0x7F} (\texttt{01111111}) & \texttt{01010011 $\oplus$ 01111111} & \texttt{0x2C} (\texttt{00101100}) \\
+        4 & ' ' & \texttt{0x20} (\texttt{00100000}) & \texttt{0xE1} (\texttt{11100001}) & \texttt{00100000 $\oplus$ 11100001} & \texttt{0xC1} (\texttt{11000001}) \\
+        5 & '2' & \texttt{0x32} (\texttt{00110010}) & \texttt{0x0C} (\texttt{00001100}) & \texttt{00110010 $\oplus$ 00001100} & \texttt{0x3E} (\texttt{00111110}) \\
+        6 & '0' & \texttt{0x30} (\texttt{00110000}) & \texttt{0x88} (\texttt{10001000}) & \texttt{00110000 $\oplus$ 10001000} & \texttt{0xB8} (\texttt{10111000}) \\
+        7 & '2' & \texttt{0x32} (\texttt{00110010}) & \texttt{0x64} (\texttt{01100100}) & \texttt{00110010 $\oplus$ 01100100} & \texttt{0x56} (\texttt{01010110}) \\
+        8 & '6' & \texttt{0x36} (\texttt{00110110}) & \texttt{0x19} (\texttt{00011001}) & \texttt{00110110 $\oplus$ 00011001} & \texttt{0x2F} (\texttt{00101111}) \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+\textbf{Ciphertext Hex}: \texttt{D9652CC13E88562F}. Decryption: $C \oplus K$ yields \texttt{0x43 0x4E 0x53 0x20 0x32 0x30 0x32 0x36}, successfully decoded as \texttt{"CNS 2026"}.
+
+\subsection{Trace 4: RSA-PSS Signing and Verification}
+\textbf{Execution Workflow}:
+\begin{enumerate}
+    \item \textbf{Key Generation}: Generate 2048-bit modulus $n$, public exponent $e = 65537$, and private exponent $d$.
+    \item \textbf{Input Message}: \texttt{"Confidential Academic Dispatch 2026"}.
+    \item \textbf{Digest Generation}:
+    \begin{equation}
+        h = \text{SHA-256}(M) = \texttt{b8c8d23e5932a39c4d96a77d...} \quad (32\text{ bytes / }256\text{ bits})
+    \end{equation}
+    \item \textbf{PSS Padding}: Generate cryptographically random salt of length $s_{len} = \text{MAX\_LENGTH} = 222\text{ bytes}$. Compute masked data using MGF1(SHA-256).
+    \item \textbf{Exponentiation}: Compute signature $S = \mu^d \pmod n$ (256 bytes / 2048 bits).
+    \item \textbf{Verification}: Compute $\mu' = S^e \pmod n$. Extract salt, recalculate $h'$, compare with $h$. Verification returns \textbf{TRUE}.
+\end{enumerate}
+
+% ==============================================================================
+% 6. ALGORITHMS, PSEUDOCODE, AND FLOWCHARTS
+% ==============================================================================
+\section{Algorithms, Pseudocode, and Flowcharts}
+
+\subsection{Algorithmic Pseudocode}
+
+\begin{minipage}[t]{0.48\textwidth}
+\begin{lstlisting}[caption={Caesar Modular Encryption}]
+Algorithm CaesarEncrypt(P, K):
+    shift = K mod 26
+    C = empty string
+    for each char in P:
+        if 'a' <= char <= 'z':
+            pos = ord(char) - ord('a')
+            C += chr((pos + shift) mod 26 + ord('a'))
+        else if 'A' <= char <= 'Z':
+            pos = ord(char) - ord('A')
+            C += chr((pos + shift) mod 26 + ord('A'))
+        else:
+            C += char
+    return C
+\end{lstlisting}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\begin{lstlisting}[caption={Vigenere Polyalphabetic Encryption}]
+Algorithm VigenereEncrypt(P, K):
+    clean_k = NormalizeKey(K)
+    L = Length(clean_k)
+    k_idx = 0
+    C = empty string
+    for each char in P:
+        if char is alphabetic:
+            shift = ord(clean_k[k_idx mod L]) - ord('A')
+            base = ord('a') if islower(char) else ord('A')
+            pos = ord(char) - base
+            C += chr((pos + shift) mod 26 + base)
+            k_idx += 1
+        else:
+            C += char
+    return C
+\end{lstlisting}
+\end{minipage}
+
+\vspace{0.4cm}
+
+\begin{minipage}[t]{0.48\textwidth}
+\begin{lstlisting}[caption={One-Time Pad Bytewise XOR}]
+Algorithm OTPEncrypt(M_bytes, K_bytes):
+    if Length(M_bytes) != Length(K_bytes):
+        raise ValueError("Length mismatch")
+    C_bytes = empty byte array
+    for i from 0 to Length(M_bytes) - 1:
+        C_bytes[i] = M_bytes[i] XOR K_bytes[i]
+    return C_bytes
+
+Algorithm OTPDecrypt(C_bytes, K_bytes):
+    raw = OTPEncrypt(C_bytes, K_bytes)
+    try:
+        return UTF8Decode(raw), raw
+    catch UnicodeDecodeError:
+        return null, raw
+\end{lstlisting}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\begin{lstlisting}[caption={RSA-PSS Digital Signature}]
+Algorithm RSAPSSSign(M, d, n):
+    data = UTF8Encode(M)
+    h = SHA256(data)
+    salt = CSPRNG_Bytes(MAX_LENGTH)
+    mu = PSS_Encode(h, salt)
+    S = ModPow(mu, d, n)
+    return S
+
+Algorithm RSAPSSVerify(M, S, e, n):
+    data = UTF8Encode(M)
+    mu = ModPow(S, e, n)
+    h = SHA256(data)
+    return PSS_Verify(mu, h)
+\end{lstlisting}
+\end{minipage}
+
+\subsection{Architectural Flowcharts}
+
+\begin{figure}[h!]
+\centering
+\begin{lstlisting}[frame=single,basicstyle=\ttfamily\scriptsize]
++---------------------------------------------------------------------------------------------------+
+|                        CLASSICAL CIPHER FLOWCHART (CAESAR & VIGENERE)                             |
++---------------------------------------------------------------------------------------------------+
+  [Input Text P, Key K]
+           |
+           v
+  {Is Key Valid?} ---> (NO) ---> [Raise TypeError / ValueError]
+           | (YES)
+           v
+  [Normalize Key (K mod 26 or Uppercase)]
+           |
+           +-----------------------+
+           | Loop over each char c | <---------------------------------------+
+           +-----------------------+                                         |
+                       |                                                     |
+         {Is char c alphabetic?}                                             |
+             /                \                                              |
+       (YES)/                  \(NO)                                         |
+           v                    v                                            |
+  [Compute Shift]        [Preserve verbatim;]                                |
+  [Shift mod 26]         [Do NOT advance Vigenere key stream]                |
+  [Advance key index]           |                                            |
+           \                    /                                            |
+            v                  v                                             |
+           [Append result char to Output C]                                  |
+                       |                                                     |
+           {More characters in input?} --------------------------------------+
+                       | (NO)
+                       v
+         [Return Complete Ciphertext C]
+\end{lstlisting}
+\caption{Flowchart for Classical Substitution Operations (Activities 1 \& 2)}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\begin{lstlisting}[frame=single,basicstyle=\ttfamily\scriptsize]
++---------------------------------------------------------------------------------------------------+
+|                     MODERN CRYPTOGRAPHIC SYSTEMS FLOWCHART (OTP & RSA-PSS)                        |
++---------------------------------------------------------------------------------------------------+
+       ONE-TIME PAD (STREAM XOR)                     RSA-PSS DIGITAL SIGNATURE
+  [Message M] ---> [Encode UTF-8]               [Message M] ---> [SHA-256 Hash]
+          |                                                             |
+          v                                                             v
+  [CSPRNG Key K (secrets.token_bytes)]                          [Digest h (256 bits)]
+          |                                                             |
+  {len(M) == len(K)?}                                                   v
+     /          \                                               [Generate Random Salt]
+(YES)            (NO)                                                   |
+   v                v                                                   v
+[Bytewise XOR] [Raise ValueError]                               [MGF1 PSS Encoding: mu]
+   |                                                                    |
+   v                                                                    v
+[Ciphertext C] ---> [XOR with K]                                [S = mu^d mod n (Sign)]
+                           |                                            |
+                           v                                            v
+               [Recover Original M]                             [Signature S (256 bytes)]
+                                                                        |
+                                                                        v
+                                                          {Verify: S^e mod n matches h?}
+                                                              /                       \
+                                                         (YES)/                        \(NO)
+                                                             v                          v
+                                                    [VALID: Authentic]         [INVALID: Tampered]
+\end{lstlisting}
+\caption{Flowchart for Modern Cryptographic Primitives (Activities 3 \& 4)}
+\end{figure}
+
+% ==============================================================================
+% 7. SYSTEM REQUIREMENTS AND ENVIRONMENT
+% ==============================================================================
+\section{System Requirements and Implementation Environment}
+
+\subsection{Hardware and Host Operating Environment}
+\begin{itemize}
+    \item \textbf{Operating System}: Microsoft Windows 11 Enterprise (64-bit AMD64 architecture).
+    \item \textbf{Host Processor}: Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz, 4 Cores, 8 Logical Processors.
+    \item \textbf{System Memory}: 16.0 GB DDR4 RAM.
+\end{itemize}
+
+\subsection{Software Toolchain and Verified Dependencies}
+\begin{table}[h!]
+    \centering
+    \small
+    \begin{tabularx}{\linewidth}{lllX}
+        \toprule
+        \rowcolor{tableheader}
+        \textbf{Component} & \textbf{Installed Version} & \textbf{Source / Manager} & \textbf{Role in Laboratory Suite} \\
+        \midrule
+        Python Runtime & \texttt{3.14.6 (AMD64)} & \texttt{uv} Virtualenv & Primary execution language \\
+        \texttt{uv} & \texttt{0.6.1+} & Astral Software & High-performance package manager \\
+        \texttt{cryptography} & \texttt{50.0.2} & PyPI / PyCA & RSA key generation, PSS padding, SHA-256 \\
+        \texttt{rich} & \texttt{15.0.0} & PyPI & Terminal UI, data flow pipelines, styling \\
+        \texttt{pytest} & \texttt{9.1.1} & PyPI & Automated unit testing and KAT framework \\
+        MiKTeX & \texttt{25.12} & Christian Schenk & LaTeX compilation engine (\texttt{pdflatex}) \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\subsection{Repository Architecture and Modular Packaging}
+In accordance with Architecture Decision Record \textbf{ADR-0001} (\textit{Modular Activity Architecture \& Interactive TUI Dispatcher}), the codebase is partitioned into isolated, self-contained packages:
+\begin{lstlisting}[frame=single,basicstyle=\ttfamily\scriptsize]
+cns/
+|-- activity1_caesar/            # Activity 1: Caesar Cipher (CO1)
+|   |-- caesar.py                # Core modular shift logic & key normalization
+|   |-- cli.py                   # Dedicated CLI runner & educational demonstrations
+|   |-- execution_record.txt     # Genuine execution transcripts and test logs
+|   +-- tests/test_caesar.py     # 17 automated pytest cases
+|-- activity2_vigenere/          # Activity 2: Vigenere Cipher (CO4)
+|   |-- vigenere.py              # Tabula Recta stream advance & key normalization
+|   |-- cli.py                   # Dedicated CLI runner & Kasiski explanations
+|   |-- execution_record.txt     # Genuine execution transcripts and test logs
+|   +-- tests/test_vigenere.py   # 17 automated pytest cases
+|-- activity3_one_time_pad/      # Activity 3: One-Time Pad (CO3)
+|   |-- otp.py                   # CSPRNG key generation (secrets) & bytewise XOR
+|   |-- cli.py                   # Dedicated CLI runner & Two-Time Pad demonstration
+|   |-- execution_record.txt     # Genuine execution transcripts and test logs
+|   +-- tests/test_otp.py        # 17 automated pytest cases
+|-- activity4_digital_signature/ # Activity 4: Digital Signature (CO3)
+|   |-- signature.py             # 2048-bit RSA-PSS signing & SHA-256 verification
+|   |-- cli.py                   # Dedicated CLI runner & 4-stage tamper demonstration
+|   |-- execution_record.txt     # Genuine execution transcripts and test logs
+|   +-- tests/test_signature.py  # 18 automated pytest cases
+|-- main.py                      # Unified Interactive TUI & CLI dispatcher
+|-- pyproject.toml               # Python project specifications & test discovery
++-- report/                      # Comprehensive technical documentation & deliverables
+\end{lstlisting}
+
+% ==============================================================================
+% 8. IMPLEMENTATION DETAILS
+% ==============================================================================
+\section{Implementation Details}
+
+\subsection{Activity 1: Caesar Cipher (\texttt{activity1\_caesar/caesar.py})}
+\begin{itemize}
+    \item \texttt{normalize\_key(key: int) -> int}: Normalizes integer key via \texttt{key \% 26}. Validates that \texttt{key} is strictly an integer and disallows booleans (\texttt{isinstance(key, bool)} check) to prevent Python's subclassing loophole (\texttt{bool} inherits from \texttt{int}).
+    \item \texttt{encrypt(plaintext: str, key: int) -> str}: Iterates over input characters, computes modular shifts relative to ASCII bases \texttt{'a'} and \texttt{'A'}, and preserves non-alphabetic characters verbatim.
+    \item \texttt{decrypt(ciphertext: str, key: int) -> str}: Directly implemented as \texttt{encrypt(ciphertext, -key)}, mathematically leveraging the additive inverse property of $\mathbb{Z}_{26}$.
+\end{itemize}
+
+\subsection{Activity 2: Vigen\`ere Cipher (\texttt{activity2\_vigenere/vigenere.py})}
+\begin{itemize}
+    \item \texttt{normalize\_key(key: str) -> str}: Enforces that the key is a non-empty string consisting exclusively of ASCII alphabetic characters (\texttt{key.isalpha() and key.isascii()}). Normalizes key to uppercase.
+    \item \texttt{encrypt(plaintext: str, key: str) -> str}: Implements the key-stream pointer \texttt{key\_idx}. The pointer increments \textbf{strictly} when an alphabetic character is enciphered; non-alphabetic characters bypass shift computation and do \textbf{not} advance the stream.
+    \item \texttt{decrypt(ciphertext: str, key: str) -> str}: Computes \texttt{(pos - shift) \% 26}, maintaining identical stream alignment rules to guarantee invertibility.
+\end{itemize}
+
+\subsection{Activity 3: One-Time Pad (\texttt{activity3\_one\_time_pad/otp.py})}
+\begin{itemize}
+    \item \texttt{generate\_key(length: int) -> bytes}: Invokes \texttt{secrets.token\_bytes(length)}, harnessing the OS cryptographically secure entropy pool (CryptGenRandom / BCryptGenRandom on Windows).
+    \item \texttt{xor\_bytes(data: bytes, key: bytes) -> bytes}: Computes byte-by-byte XOR using a list comprehension over \texttt{zip(data, key)}. Enforces strict length equality (\texttt{len(data) == len(key)}), raising a \texttt{ValueError} if lengths differ.
+    \item \texttt{encrypt(plaintext, key)} \& \texttt{decrypt(ciphertext, key)}: Accepts either UTF-8 text strings or arbitrary binary bytearrays. Decryption attempts UTF-8 decoding and returns a tuple \texttt{(decoded\_text, raw\_bytes)}, ensuring graceful handling when an invalid key produces non-decodable bytes.
+\end{itemize}
+
+\subsection{Activity 4: Digital Signature (\texttt{activity4\_digital\_signature/signature.py})}
+\begin{itemize}
+    \item \texttt{generate\_key\_pair(key\_size: int = 2048)}: Generates standard RSA key pairs using public exponent $e = 65537$ (the 4th Fermat prime $F_4$, optimal for mitigating Coppersmith attacks). Enforces minimum modulus size of 1024 bits.
+    \item \texttt{sign\_message(message, private\_key) -> bytes}: Implements RSA-PSS with \texttt{hashes.SHA256()} and \texttt{padding.MGF1(hashes.SHA256())} with \texttt{salt\_length = padding.PSS.MAX\_LENGTH}.
+    \item \texttt{verify\_signature(message, signature, public\_key) -> bool}: Verifies the signature against the message digest. Catches \texttt{InvalidSignature} exceptions internally and returns a clean boolean status (\texttt{True}/\texttt{False}) to prevent timing side channels or uncontrolled crashes.
+    \item \texttt{get\_public\_key\_fingerprint(public\_key) -> str}: Computes the canonical SHA-256 hex fingerprint of the public key's DER-encoded \texttt{SubjectPublicKeyInfo} representation.
+\end{itemize}
+
+\subsection{Unified Terminal User Interface (\texttt{main.py})}
+The root entrypoint provides an interactive Terminal User Interface (TUI) with arrow-key navigation, in-TUI pytest execution, and real-time character/byte **Data Flow Pipeline Visualizations** rendering tabular traces for all four activities. It also provides seamless headless command-line dispatching: \texttt{uv run main.py activity1}, \texttt{activity2}, \texttt{activity3}, and \texttt{activity4}.
+
+% ==============================================================================
+% 9. EXECUTION PROCEDURE AND DEMONSTRATION TRANSCRIPTS
+% ==============================================================================
+\section{Execution Procedure and Demonstration Transcripts}
+
+\subsection{Execution Instructions from a Clean Environment}
+To execute the project from a fresh terminal environment:
+\begin{lstlisting}[language=bash]
+# 1. Clone repository and navigate to root directory
+cd d:/Codebase/cns
+
+# 2. Run all 69 automated test cases across all packages
+uv run pytest -v
+
+# 3. Launch interactive TUI suite with arrow-key navigation
+uv run main.py
+
+# 4. Direct headless activity invocations
+uv run main.py activity1 -p "Hello, World!" -k 3
+uv run main.py activity2 -p "ATTACK AT DAWN!" -k "LEMON"
+uv run main.py activity3 -p "Top Secret CNS Dispatch"
+uv run main.py activity4 -m "Academic CNS Signature 2026"
+
+# 5. Specialized demonstrations
+uv run python activity3_one_time_pad/cli.py --demo-key-reuse
+uv run python activity4_digital_signature/cli.py --demo-tamper
+\end{lstlisting}
+
+\subsection{Genuine Terminal Demonstration Outputs}
+
+\subsubsection{Activity 1: Caesar Cipher Execution}
+\begin{lstlisting}[frame=single,basicstyle=\ttfamily\scriptsize]
+$ uv run python activity1_caesar/cli.py -p "CNS Lab: Activity-01 (Caesar Cipher) @ 2026!" -k 3
+
+================================================================================
+           CNS ACTIVITY 1: CAESAR CIPHER DEMONSTRATION
+================================================================================
+Original Plaintext  : CNS Lab: Activity-01 (Caesar Cipher) @ 2026!
+Input Key           : 3 (Normalized shift: 3)
+Encrypted Ciphertext: FQV Ode: Dfwlylwb-01 (Fdhvdu Flskhu) @ 2026!
+Recovered Plaintext : CNS Lab: Activity-01 (Caesar Cipher) @ 2026!
+--------------------------------------------------------------------------------
+Round-Trip Verified : SUCCESS (Original == Recovered)
+================================================================================
+\end{lstlisting}
+
+\subsubsection{Activity 2: Vigen\`ere Cipher Execution}
+\begin{lstlisting}[frame=single,basicstyle=\ttfamily\scriptsize]
+$ uv run python activity2_vigenere/cli.py -p "The quick brown fox jumps over the lazy dog!" -k "LEMON"
+
+================================================================================
+           CNS ACTIVITY 2: VIGENERE CIPHER DEMONSTRATION
+================================================================================
+Original Plaintext  : The quick brown fox jumps over the lazy dog!
+Input Key           : LEMON (Normalized: LEMON)
+Encrypted Ciphertext: Elq ehtgw pezaz tbi ngacd shse elq znkc pct!
+Recovered Plaintext : The quick brown fox jumps over the lazy dog!
+--------------------------------------------------------------------------------
+Round-Trip Verified : SUCCESS (Original == Recovered)
+================================================================================
+\end{lstlisting}
+
+\subsubsection{Activity 3: One-Time Pad \& Catastrophic Key-Reuse Attack}
+\begin{lstlisting}[frame=single,basicstyle=\ttfamily\scriptsize]
+$ uv run python activity3_one_time_pad/cli.py --demo-key-reuse
+
+================================================================================
+           DEMONSTRATION: CATASTROPHIC TWO-TIME PAD ATTACK
+================================================================================
+Plaintext 1 (M1)       : ATTACK AT DAWN!
+Plaintext 2 (M2)       : DEFEND THE WALL
+Shared Reused Key (Hex): 10FB4279D7D62311E26CD8393A0648
+Ciphertext 1 (C1 Hex)  : 51AF1638949D0350B64C9C786D4869
+Ciphertext 2 (C2 Hex)  : 54BE043C99920345AA29F86E7B4A04
+--------------------------------------------------------------------------------
+Adversary computes C1 ^ C2:
+C1 ^ C2 (Hex)          : 051112040D0F00151C65641616026D
+M1 ^ M2 (Hex)          : 051112040D0F00151C65641616026D
+Key Canceled Out?      : YES (C1 ^ C2 == M1 ^ M2)
+
+Conclusion: Reusing a One-Time Pad key destroys perfect secrecy entirely,
+allowing an eavesdropper to recover the plaintext difference without knowing the key!
+================================================================================
+\end{lstlisting}
+
+\subsubsection{Activity 4: Digital Signature Tamper \& Key-Mismatch Detection}
+\begin{lstlisting}[frame=single,basicstyle=\ttfamily\scriptsize]
+$ uv run python activity4_digital_signature/cli.py --demo-tamper
+
+================================================================================
+      DEMONSTRATION: DIGITAL SIGNATURE INTEGRITY & TAMPER DETECTION
+================================================================================
+Original Message       : Authorise payment of 5000 INR to Student Club.
+Tampered Message       : Authorise payment of 50000 INR to Student Club.
+--------------------------------------------------------------------------------
+1. Authentic Message + Original Signature : VALID [Passed]
+2. Tampered Message + Original Signature  : INVALID [Tampering Detected!]
+3. Original Message + Corrupted Signature : INVALID [Corruption Detected!]
+4. Original Message + Unrelated Public Key: INVALID [Key Mismatch Detected!]
+--------------------------------------------------------------------------------
+Conclusion: Any modification of the message, signature corruption, or key mismatch
+immediately invalidates the digital signature, providing strict integrity assurance.
+================================================================================
+\end{lstlisting}
+
+% ==============================================================================
+% 10. TESTING METHODOLOGY AND RESULTS
+% ==============================================================================
+\section{Testing Methodology and Results}
+
+\subsection{Testing Approach and Test Categories}
+The verification framework employs \texttt{pytest 9.1.1} structured into five distinct test categories:
+\begin{enumerate}
+    \item \textbf{Known-Answer Tests (KAT)}: Validating outputs against standardized literature vectors (e.g., standard Caesar shifts, ROT13, classical Vigen\`ere tables, deterministic OTP hex vectors).
+    \item \textbf{Boundary and Wrapping Tests}: Modular wrapping at alphabet extremes ($Z \to A$), non-alphabetic whitespace handling, large keys ($K \ge 26$), and empty strings.
+    \item \textbf{Invertibility (Round-Trip) Tests}: Proving formal correctness: $\mathcal{D}_K(\mathcal{E}_K(P)) == P$.
+    \item \textbf{Type Validation and Negative Tests}: Injecting booleans, integers, \texttt{None}, floats, and negative lengths to ensure appropriate exceptions (\texttt{TypeError}, \texttt{ValueError}) are raised.
+    \item \textbf{Cryptographic Security and Tamper Tests}: Validating that modified messages, corrupted signatures, and mismatched public keys evaluate to \texttt{False} without crashing.
+\end{enumerate}
+
+\subsection{Exhaustive 69-Test Verification Matrix}
+The following table records the empirical results of all 69 automated tests discovered across the four packages.
+
+\begin{small}
+\begin{longtable}{p{0.38\linewidth}p{0.20\linewidth}p{0.28\linewidth}c}
+\toprule
+\rowcolor{tableheader}
+\textbf{Test Identifier} & \textbf{Category} & \textbf{Input / Condition} & \textbf{Status} \\
+\midrule
+\endhead
+
+\multicolumn{4}{l}{\textbf{\textcolor{navyblue}{Activity 1: Caesar Cipher Test Suite (\texttt{activity1\_caesar/tests/test\_caesar.py})}}} \\
+\midrule
+\texttt{test\_normalize\_key\_standard} & Normalization & Key = 3 & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_normalize\_key\_zero} & Boundary & Key = 0 & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_normalize\_key\_twenty\_five} & Boundary & Key = 25 & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_normalize\_key\_greater...} & Modulo Wrap & Key = 26, 29 $\to$ 0, 3 & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_normalize\_key\_negative} & Negative Shift & Key = -1, -3 $\to$ 25, 23 & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_normalize\_key\_invalid\_types} & Input Validation & String, Float, None, Bool & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_known\_answers} & KAT & "HELLO" (k=3), ROT13 & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_wrap\_boundaries} & Wrap Boundary & "XYZ" (k=3) $\to$ "ABC" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_key\_variations} & Equivalence & Keys 0, 26, 29, -1 & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_invalid\_plaintext} & Input Validation & Integer 12345, None & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_empty\_message} & Edge Case & Empty string "" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_non\_alphabetic} & Symbol Handling & Spaces, digits, punctuation & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_repeated\_chars} & Pattern Handling & "AAAA" $\to$ "BBBB" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_decrypt\_known\_answers} & Decryption KAT & "KHOOR" (k=3) $\to$ "HELLO" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_round\_trip\_property} & Invertibility & 10 pangram variants & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_decrypt\_invalid\_types} & Input Validation & Invalid types for decrypt & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_cli\_run\_demo} & Integration / CLI & Full workflow execution & \textcolor{passgreen}{\textbf{PASS}} \\
+\midrule
+
+\multicolumn{4}{l}{\textbf{\textcolor{navyblue}{Activity 2: Vigen\`ere Cipher Test Suite (\texttt{activity2\_vigenere/tests/test\_vigenere.py})}}} \\
+\midrule
+\texttt{test\_normalize\_key\_standard} & Normalization & "LEMON", "lemon", "LeMoN" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_normalize\_key\_empty} & Input Validation & Empty string "" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_normalize\_key\_non\_alpha} & Input Validation & Non-alphabetic tokens & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_normalize\_key\_invalid\_types} & Type Validation & Integer, None, bool, list & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_known\_answers} & KAT & "ATTACKATDAWN" / "LEMON" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_single\_char\_key} & Caesar Equiv. & Key "D" $\equiv$ Caesar shift 3 & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_key\_longer...} & Boundary & Plain len 5, Key len 11 & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_plaintext\_longer...} & Key Repetition & "AAAAAA" / "ABC" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_invalid\_plaintext} & Type Validation & Plaintext integer, None & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_case\_punctuation} & Stream Alignment & Key advances only on letters & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_no\_alphabetic} & Edge Case & Digits and symbols only & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_empty\_plaintext} & Edge Case & Empty string "" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_repeated\_patterns} & Pattern Handling & "AAAA" (k="B"), "ABAB" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_decrypt\_known\_answers} & Decryption KAT & "LXFOPVEFRNHR" / "LEMON" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_round\_trip\_property} & Invertibility & 8 varied test cases & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_decrypt\_invalid\_types} & Type Validation & Non-string ciphertext & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_cli\_run\_demo} & Integration / CLI & CLI execution test & \textcolor{passgreen}{\textbf{PASS}} \\
+\midrule
+
+\multicolumn{4}{l}{\textbf{\textcolor{navyblue}{Activity 3: One-Time Pad Test Suite (\texttt{activity3\_one\_time\_pad/tests/test\_otp.py})}}} \\
+\midrule
+\texttt{test\_generate\_key\_length} & CSPRNG Length & 0, 10, 100 bytes requested & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_generate\_key\_independence} & Randomness & Two 32-byte successive calls & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_generate\_key\_invalid\_len} & Input Validation & Negative length, float, bool & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_xor\_bytes\_known\_vector} & Fixed KAT & Deterministic byte vectors & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_xor\_bytes\_properties} & Invertibility & Self-inverse, zero identity & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_xor\_bytes\_length\_mismatch} & Length Check & Key length != Data length & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_xor\_bytes\_invalid\_types} & Type Validation & String, integer, None & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_decrypt\_kat} & Deterministic KAT & "CNS 2026" / fixed hex key & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_accepts\_raw\_bytes} & Interface & Arbitrary binary sequences & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_decrypt\_round\_trip} & Fuzz Invertibility & Sentences, symbols, pangrams & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_encrypt\_invalid\_types} & Type Validation & Plaintext int, string key & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_empty\_message} & Edge Case & 0-byte key and message & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_multibyte\_utf8\_chars} & Unicode / UTF-8 & Accents, kanji, lock emoji & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_decrypt\_incorrect\_key} & Security Property & Wrong key yields raw bytes & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_two\_time\_pad\_attack} & Cryptanalysis & $C_1 \oplus C_2 == M_1 \oplus M_2$ & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_cli\_run\_demo} & Integration / CLI & Standard CLI run & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_cli\_demo\_key\_reuse} & Integration / CLI & Two-Time Pad CLI demo & \textcolor{passgreen}{\textbf{PASS}} \\
+\midrule
+
+\multicolumn{4}{l}{\textbf{\textcolor{navyblue}{Activity 4: Digital Signature Test Suite (\texttt{activity4\_digital\_signature/tests/test\_signature.py})}}} \\
+\midrule
+\texttt{test\_generate\_key\_defaults} & Key Generation & 2048-bit RSA, $e=65537$ & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_generate\_key\_custom\_size} & Custom Size & 1024-bit generation & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_generate\_key\_invalid\_size} & Validation & $<1024$ bits, string, None & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_export\_public\_key\_pem} & Serialization & SubjectPublicKeyInfo PEM & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_get\_public\_key\_fingerprint} & Identification & 64-character SHA-256 hex & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_sign\_and\_verify\_normal} & Functional & Standard string message & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_sign\_accepts\_raw\_bytes} & Interface & Binary byte message & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_sign\_invalid\_types} & Type Validation & Integer message, public key & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_verification\_message\_tamper} & Tamper Detection & Modified message content & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_verification\_sig\_tamper} & Tamper Detection & Corrupted signature bit & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_verification\_wrong\_pubkey} & Key Mismatch & Independent public key & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_verification\_malformed\_sig} & Robustness & Truncated/non-bytes sig & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_probabilistic\_signature\_pss} & PSS Randomness & Same msg $\to$ distinct sigs & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_empty\_message\_signing} & Edge Case & Empty string "" & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_multibyte\_unicode\_signing} & Unicode / UTF-8 & Accents, kanji, emoji & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_verify\_invalid\_pubkey} & Validation & Non-RSAPublicKey type & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_cli\_run\_demo} & Integration / CLI & Standard CLI workflow & \textcolor{passgreen}{\textbf{PASS}} \\
+\texttt{test\_cli\_demo\_tamper} & Integration / CLI & 4-way tamper CLI demo & \textcolor{passgreen}{\textbf{PASS}} \\
+\bottomrule
+\end{longtable}
+\end{small}
+
+\textbf{Summary of Test Outcomes}: Total Tests Discovered: 69; Passed: 69 (100\%); Failed: 0; Execution Time: 0.55s.
+
+% ==============================================================================
+% 11. SECURITY ANALYSIS
+% ==============================================================================
+\section{Security Analysis and Cryptanalysis}
+
+\subsection{Monoalphabetic Cryptanalysis (Caesar Cipher)}
+The Caesar cipher provides zero computational confidentiality against modern adversaries due to two fatal mathematical weaknesses:
+\begin{enumerate}
+    \item \textbf{Exhaustive Key Search (Brute-Force)}: The keyspace is strictly bounded by the alphabet cardinality:
+    \begin{equation}
+        |\mathcal{K}| = 26
+    \end{equation}
+    Because $K \equiv 0 \pmod{26}$ is the identity map, there exist only 25 non-trivial keys. A modern computer evaluates all 25 decryptions in less than 5 microseconds:
+    \begin{equation}
+        T_{\text{break}} = \mathcal{O}(|\mathcal{K}| \cdot N) = 25 \cdot N \text{ operations}
+    \end{equation}
+    \item \textbf{Frequency Analysis}: The cipher preserves natural language letter frequencies. In natural English text, the letter \textbf{'E'} occurs with $\approx 12.7\%$ frequency, followed by \textbf{'T'} ($9.1\%$), \textbf{'A'} ($8.2\%$), and \textbf{'O'} ($7.5\%$). An attacker computes the relative unigram frequency distribution of the ciphertext and aligns the maximum peak with 'E', immediately discovering the shift key $K$ without testing remaining keys.
+\end{enumerate}
+
+\subsection{Polyalphabetic Cryptanalysis (Vigen\`ere Cipher)}
+Although the Vigen\`ere cipher expands the keyspace to $26^L$ for a keyword of length $L$, it remains fundamentally broken against classical cryptanalysis:
+\begin{enumerate}
+    \item \textbf{Kasiski Examination}: Because the keyword repeats periodically every $L$ characters, repeated words in the plaintext separated by a distance that is a multiple of $L$ will be enciphered with the exact same key sequence, producing identical ciphertext segments. By measuring the distances $d_1, d_2, \dots, d_m$ between identical n-grams (trigrams or four-grams) and computing their greatest common divisor:
+    \begin{equation}
+        L = \gcd(d_1, d_2, \dots, d_m)
+    \end{equation}
+    the attacker deduces the keyword length $L$.
+    \item \textbf{Friedman's Index of Coincidence ($I_c$)}: The Index of Coincidence measures the probability that two randomly selected letters from a text are identical:
+    \begin{equation}
+        I_c = \frac{\sum_{i=0}^{25} f_i (f_i - 1)}{N (N - 1)}
+    \end{equation}
+    For standard English text, $I_{c,\text{English}} \approx 0.067$, while for a purely random uniform distribution, $I_{c,\text{Random}} \approx 1/26 \approx 0.0385$. Using William Friedman's formula, the keyword length $L$ is estimated directly from the ciphertext:
+    \begin{equation}
+        L \approx \frac{0.027 \cdot N}{(N - 1) I_c - 0.038 N + 0.065}
+    \end{equation}
+    \item \textbf{Caesar Decomposition}: Once $L$ is established, the ciphertext is partitioned into $L$ independent slices:
+    \begin{equation}
+        \mathcal{S}_j = \{C_j, C_{j+L}, C_{j+2L}, \dots\} \quad \text{for } j \in \{0, 1, \dots, L-1\}
+    \end{equation}
+    Each slice $\mathcal{S}_j$ is an isolated monoalphabetic Caesar cipher! The adversary solves all $L$ slices in parallel via standard unigram frequency analysis.
+\end{enumerate}
+
+\subsection{Information-Theoretic Analysis (One-Time Pad)}
+\subsubsection{The Five Mandatory Conditions for Shannon's Perfect Secrecy}
+The mathematical guarantee $\mathbb{P}(M = m \mid C = c) = \mathbb{P}(M = m)$ holds if and only if all five conditions are strictly observed:
+\begin{enumerate}
+    \item \textbf{Uniform Randomness}: Each key byte must be generated from a true random source or high-entropy CSPRNG with zero statistical bias: $\mathbb{P}(K_i = k) = 1/256$.
+    \item \textbf{Key Length Equality}: The key length must strictly satisfy $|K| \ge |M|$.
+    \item \textbf{Absolute Confidentiality}: The key material must remain completely unknown to unauthorized third parties.
+    \item \textbf{Strict Single Use}: Key material must be used \textbf{strictly once} and immediately zeroized.
+    \item \textbf{Secure Pre-Shared Distribution}: Communicating parties must securely synchronize key pads prior to message transmission.
+\end{enumerate}
+
+\subsubsection{Catastrophic Two-Time Pad Vulnerability}
+If an identical key $K$ is reused to encrypt two separate plaintexts $M_1$ and $M_2$:
+\begin{equation}
+    C_1 = M_1 \oplus K, \quad C_2 = M_2 \oplus K
+\end{equation}
+An eavesdropper intercepting both ciphertexts computes their bitwise XOR sum:
+\begin{equation}
+    C_1 \oplus C_2 = (M_1 \oplus K) \oplus (M_2 \oplus K) = M_1 \oplus M_2 \oplus (K \oplus K) = M_1 \oplus M_2
+\end{equation}
+The key cancels out entirely! The adversary now possesses the XOR sum of two natural language plaintexts. Because ASCII spaces (\texttt{0x20}) XORed with alphabetic characters flip their case, the adversary applies \textbf{crib dragging} (sliding common English words such as \texttt{" the "}, \texttt{" that "}, \texttt{" with "} across $C_1 \oplus C_2$) to simultaneously recover both plaintexts without ever determining the key.
+
+\subsection{Asymmetric Security Analysis (RSA-PSS)}
+\subsubsection{Security Properties Provided}
+\begin{itemize}
+    \item \textbf{Authenticity}: Verification confirms the message was signed by the specific private key corresponding to the public key.
+    \item \textbf{Integrity}: Modifying even a single bit of message $M$ produces an entirely different SHA-256 digest $h'$, causing PSS verification to fail immediately.
+    \item \textbf{Non-Repudiation}: Because private exponent $d$ is known only to the signer, they cannot credibly deny authorship of a valid signature.
+\end{itemize}
+
+\subsubsection{RSA-PSS vs. Legacy PKCS\#1 v1.5 Padding}
+In legacy PKCS\#1 v1.5, deterministic formatting allows Bleichenbacher-style chosen-ciphertext attacks and signature malleability. In contrast, **RSA-PSS (RFC 8017)** incorporates a randomized salt, making the signature probabilistic: signing the exact same message twice generates distinct 256-byte signature blocks, both of which verify correctly. RSA-PSS possesses a tight security reduction to the RSA problem in the Random Oracle Model.
+
+\subsubsection{Digital Signatures vs. Encryption and the Role of PKI}
+\begin{itemize}
+    \item \textbf{Signatures vs. Encryption}: A digital signature provides authenticity and integrity; it does \textbf{not} provide confidentiality. The message remains in plaintext. Confidentiality requires hybrid encryption (e.g., AES-256-GCM + RSA-OAEP).
+    \item \textbf{Key Possession vs. Real-World Identity}: Mathematically, a digital signature proves only that the holder of private key $d$ signed the digest. It does \textbf{not} prove who that entity is in the physical world. Binding a public key $(e, n)$ to an authentic legal identity requires **Public Key Infrastructure (PKI)**, **X.509 Digital Certificates**, and hierarchical trust rooted in trusted **Certificate Authorities (CAs)**.
+\end{itemize}
+
+% ==============================================================================
+% 12. ADVANTAGES AND LIMITATIONS
+% ==============================================================================
+\section{Advantages and Limitations}
+
+\begin{table}[h!]
+    \centering
+    \footnotesize
+    \begin{tabularx}{\linewidth}{p{0.18\linewidth}p{0.22\linewidth}p{0.26\linewidth}p{0.26\linewidth}}
+        \toprule
+        \rowcolor{tableheader}
+        \textbf{Algorithm} & \textbf{Core Strengths} & \textbf{Theoretical Limitations} & \textbf{Implementation Constraints} \\
+        \midrule
+        \textbf{Caesar Cipher} & Minimal complexity ($\mathcal{O}(N)$); trivial mental computation; foundational educational tool. & Tiny keyspace ($|\mathcal{K}|=25$); preserves letter frequencies; vulnerable to instant brute force. & Limited to alphabetic characters; cannot protect binary data; zero modern security. \\
+        \midrule
+        \textbf{Vigen\`ere Cipher} & Flattens unigram frequencies; keyspace scales exponentially ($26^L$); historically robust. & Periodic key repetition leaks length $L$ via Kasiski/Friedman tests; reduces to $L$ Caesar ciphers. & Requires synchronized alphabetic stream pointers; vulnerable to ciphertext-only attacks. \\
+        \midrule
+        \textbf{One-Time Pad} & Information-theoretic perfect secrecy ($H(M|C)=H(M)$); unbreakable even with infinite compute. & Key must equal message length ($|K|\ge|M|$); key reuse completely destroys secrecy. & Massive key distribution and storage bottleneck; pad synchronization overhead. \\
+        \midrule
+        \textbf{RSA-PSS Signature} & Asymmetric public verification; non-repudiation; message integrity; provably secure padding. & Relies on hardness of integer factorization; vulnerable to Shor's algorithm on quantum computers. & High computational cost of modular exponentiation; requires PKI/CAs for identity binding. \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Comparative Matrix of Evaluated Cryptographic Systems}
+\end{table}
+
+% ==============================================================================
+% 13. APPLICATIONS
+% ==============================================================================
+\section{Practical and Historical Applications}
+
+\subsection{Historical Applications}
+\begin{itemize}
+    \item \textbf{Julius Caesar's Military Campaigns (58 BC)}: Julius Caesar employed the monoalphabetic shift ($K=3$) to protect dispatches sent to Roman generals. Illiterate adversaries or those unfamiliar with Latin could not decipher the messages.
+    \item \textbf{American Civil War (1861--1865)}: Confederate military forces utilized the Vigen\`ere cipher via handheld brass cipher disks to communicate tactical battlefield orders. Union cryptanalysts regularly intercepted and broke these messages.
+    \item \textbf{Washington--Moscow Hotline (1963)}: Established following the Cuban Missile Crisis, the diplomatic teletype link connecting the Pentagon and the Kremlin utilized commercial teleprinter One-Time Pads. Key tapes were delivered securely via diplomatic pouches.
+\end{itemize}
+
+\subsection{Modern Industry Applications}
+\begin{itemize}
+    \item \textbf{ROT13 Text Obfuscation}: A Caesar cipher with $K=13$ is widely deployed in online forums, usenet, and puzzle games to obscure spoilers and answers from accidental glance.
+    \item \textbf{TLS 1.3 Transport Layer Security}: Digital signatures (RSA-PSS and Ed25519) authenticate web servers during the TLS 1.3 handshake, preventing Man-in-the-Middle (MitM) impersonation.
+    \item \textbf{Software Code Signing}: Microsoft Authenticode and Apple Gatekeeper utilize RSA-PSS and SHA-256 signatures embedded in executables and installer packages to verify software authenticity and integrity prior to OS execution.
+    \item \textbf{Quantum Key Distribution (QKD)}: Modern implementations of quantum cryptography (such as the BB84 protocol) combine quantum photon polarization for key exchange with classical One-Time Pad encryption to achieve information-theoretically secure communication over optical fiber networks.
+\end{itemize}
+
+% ==============================================================================
+% 14. CONCLUSION
+% ==============================================================================
+\section{Conclusion}
+This technical report has presented a comprehensive implementation, empirical verification, and cryptanalytic audit of four distinct cryptographic systems for Batch \texttt{2026\_CNS\_A\_01}. The investigation establishes clear pedagogical and architectural findings:
+\begin{enumerate}
+    \item Classical substitution ciphers (Caesar and Vigen\`ere) provide valuable historical insight into group theory and polyalphabetic mapping but are completely unviable for modern network security due to statistical frequency preservation and periodic repetition.
+    \item The One-Time Pad demonstrates Claude Shannon's mathematical ideal of perfect secrecy. However, the physical impossibility of distributing high-entropy key pads equal in size to transmitted network data restricts OTP to specialized diplomatic and quantum applications.
+    \item Asymmetric digital signatures (RSA-PSS with SHA-256) provide the foundation of modern digital trust, enabling authentic, tamper-evident communication across untrusted public networks. Furthermore, the analysis confirms that mathematical key pairs must operate within a robust Public Key Infrastructure (PKI) to achieve verified identity binding.
+    \item All 69 automated unit tests passed with 100\% correctness in 0.55 seconds, confirming that the implementation rigorously satisfies all requirements of Course Outcomes CO1, CO3, and CO4.
+\end{enumerate}
+
+% ==============================================================================
+% 15. REFERENCES
+% ==============================================================================
+\begin{thebibliography}{99}
+    \bibitem{shannon1949} Shannon, C. E. (1949). \textit{"Communication Theory of Secrecy Systems"}. Bell System Technical Journal, 28(4), 656--715.
+    \bibitem{diffiehellman1976} Diffie, W., \& Hellman, M. (1976). \textit{"New Directions in Cryptography"}. IEEE Transactions on Information Theory, 22(6), 644--654.
+    \bibitem{rsa1978} Rivest, R. L., Shamir, A., \& Adleman, L. (1978). \textit{"A Method for Obtaining Digital Signatures and Public-Key Cryptosystems"}. Communications of the ACM, 21(2), 120--126.
+    \bibitem{rfc8017} Moriarty, K., Kaliski, B., Jonsson, J., \& Rusch, A. (2016). \textit{"PKCS \#1: RSA Cryptography Specifications Version 2.2"} (RFC 8017). Internet Engineering Task Force (IETF).
+    \bibitem{fips180} National Institute of Standards and Technology (NIST). (2015). \textit{"Secure Hash Standard (SHS)"} (FIPS PUB 180-4). U.S. Department of Commerce.
+    \bibitem{bellare1996} Bellare, M., \& Rogaway, P. (1996). \textit{"The Exact Security of Digital Signatures: How to Sign with RSA and Rabin"}. Advances in Cryptology -- EUROCRYPT '96, LNCS 1070, 399--416.
+    \bibitem{stallings2017} Stallings, W. (2017). \textit{"Cryptography and Network Security: Principles and Practice"} (7th ed.). Pearson Education.
+    \bibitem{ferguson2010} Ferguson, N., Schneier, B., \& Kohno, T. (2010). \textit{"Cryptography Engineering: Design Principles and Practical Applications"}. John Wiley \& Sons.
+    \bibitem{python_secrets} Python Software Foundation. (2026). \textit{"secrets -- Generate cryptographically strong random numbers"}. Python Standard Library Documentation.
+    \bibitem{pyca_crypto} Python Cryptographic Authority (PyCA). (2026). \textit{"cryptography: Asymmetric Algorithms and Hazard Materials"}. Available at: \url{https://cryptography.io/}.
+    \bibitem{kasiski1863} Kasiski, F. W. (1863). \textit{"Die Geheimschriften und die Dechiffrir-Kunst"}. E. S. Mittler und Sohn, Berlin.
+    \bibitem{friedman1922} Friedman, W. F. (1922). \textit{"The Index of Coincidence and Its Applications in Cryptanalysis"}. Riverbank Laboratories, Publication No. 22.
+\end{thebibliography}
+
+% ==============================================================================
+% 16. GROUP CONTRIBUTION
+% ==============================================================================
+\section{Group Contribution Matrix}
+
+In accordance with course guidelines for Batch \texttt{2026\_CNS\_A\_01}, the distribution of responsibilities across the group members is recorded in Table \ref{tab:contribution}.
+
+\begin{table}[h!]
+    \centering
+    \small
+    \begin{tabularx}{\linewidth}{cllXp{0.28\linewidth}}
+        \toprule
+        \rowcolor{tableheader}
+        \textbf{Sl.} & \textbf{USN} & \textbf{Student Name} & \textbf{Primary Technical Responsibilities} & \textbf{Verified Deliverables} \\
+        \midrule
+        1 & \texttt{1KS23CS059} & \textbf{Jayaditya Dev} & Interactive TUI architecture (\texttt{main.py}), Activity 4 RSA-PSS implementation, MGF1 padding, SHA-256 fingerprinting, PKI analysis. & \texttt{main.py}, \texttt{activity4\_}\allowbreak\texttt{digital\_signature/}, 18 tests. \\
+        \addlinespace
+        2 & \texttt{1KS23CS043} & \textbf{Durgashree M} & Activity 3 One-Time Pad architecture, CSPRNG randomness verification (\texttt{secrets}), Shannon perfect secrecy proof, Two-Time Pad attack module. & \texttt{activity3\_}\allowbreak\texttt{one\_time\_pad/}, Two-time pad demo, 17 tests. \\
+        \addlinespace
+        3 & \texttt{1KS23CS020} & \textbf{Aryaman Tiwari} & Activity 2 Vigen\`ere cipher architecture, Tabula Recta mapping, alphabetic stream synchronization, Kasiski and Friedman cryptanalysis. & \texttt{activity2\_}\allowbreak\texttt{vigenere/}, CLI demonstration suite, 17 tests. \\
+        \addlinespace
+        4 & \texttt{1KS23CS034} & \textbf{Chirag T} & Activity 1 Caesar cipher architecture, modulo 26 normalization, boundary wrapping, exhaustive key search analysis, frequency analysis model. & \texttt{activity1\_}\allowbreak\texttt{caesar/}, CLI demonstration suite, 17 tests. \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Group Contribution and Deliverable Ownership Matrix}
+    \label{tab:contribution}
+\end{table}
+
+\end{document}
