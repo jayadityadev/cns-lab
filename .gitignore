@@ -40,4 +40,6 @@ desktop.ini
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+report/rendered_pages/
+report/sample_pages/
 
