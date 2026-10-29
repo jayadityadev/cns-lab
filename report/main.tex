@@ -2,6 +2,8 @@
 
 \usepackage[left=0.85in,right=0.85in,top=0.9in,bottom=0.9in]{geometry}
 \usepackage{mathptmx} % Times New Roman font for text and math
+% Set code elements and inline identifiers to document Times New Roman font
+\renewcommand{\texttt}[1]{{\normalfont #1}}
 \usepackage{setspace}
 \onehalfspacing % 1.5 line spacing standard for VTU/KSIT
 \setlength{\emergencystretch}{2em}
@@ -464,7 +466,7 @@ cns/
 The four course laboratory activities span classical substitution techniques, information-theoretic stream encryption, and modern asymmetric digital signatures. To ensure maximum code legibility and architectural clarity, each verified implementation is presented with its dedicated code snippet and algorithmic specification across Pages \pageref{fig:code_caesar}--\pageref{fig:code_rsa}.
 
 \subsection{Activity 1: Caesar Cipher Modular Substitution Logic}
-Figure \ref{fig:code_caesar} illustrates the core Python implementation for the Caesar Cipher (\texttt{activity1\_caesar/caesar.py}), enforcing robust modular residue ring arithmetic over $\mathbb{Z}_{26}$:
+Figure \ref{fig:code_caesar} illustrates the core Python implementation for the Caesar Cipher (\texttt{activity1\_caesar/\allowbreak caesar.py}), enforcing robust modular residue ring arithmetic over $\mathbb{Z}_{26}$:
 
 \begin{figure}[h!]
 \centering
@@ -485,7 +487,7 @@ Figure \ref{fig:code_caesar} illustrates the core Python implementation for the 
 \clearpage
 
 \subsection{Activity 2: Vigen\`ere Cipher Polyalphabetic Substitution Logic}
-Figure \ref{fig:code_vigenere} shows the core Python implementation for the polyalphabetic Vigen\`ere cipher (\texttt{activity2\_vigenere/vigenere.py}):
+Figure \ref{fig:code_vigenere} shows the core Python implementation for the polyalphabetic Vigen\`ere cipher (\texttt{activity2\_vigenere/\allowbreak vigenere.py}):
 
 \begin{figure}[h!]
 \centering
@@ -506,7 +508,7 @@ Figure \ref{fig:code_vigenere} shows the core Python implementation for the poly
 \clearpage
 
 \subsection{Activity 3: One-Time Pad Bytewise Stream Logic}
-Figure \ref{fig:code_otp} documents the One-Time Pad stream cipher implementation (\texttt{activity3\_one\_time\_pad/otp.py}), delivering information-theoretic secrecy:
+Figure \ref{fig:code_otp} documents the One-Time Pad stream cipher implementation (\texttt{activity3\_one\_time\_pad/\allowbreak otp.py}), delivering information-theoretic secrecy:
 
 \begin{figure}[h!]
 \centering
@@ -526,7 +528,7 @@ Figure \ref{fig:code_otp} documents the One-Time Pad stream cipher implementatio
 \clearpage
 
 \subsection{Activity 4: RSA-PSS Digital Signature Logic}
-Figure \ref{fig:code_rsa} presents the asymmetric digital signature implementation (\texttt{activity4\_digital\_signature/signature.py}) utilizing PKCS\#1 v2.2 RSA-PSS with SHA-256:
+Figure \ref{fig:code_rsa} presents the asymmetric digital signature implementation (\texttt{activity4\_digital\_signature/\allowbreak signature.py}) utilizing PKCS\#1 v2.2 RSA-PSS with SHA-256:
 
 \begin{figure}[h!]
 \centering
@@ -745,7 +747,7 @@ The RSA-PSS pipeline implements asymmetric digital signing and public verificati
 \chapter{Implementation and Runtime Demonstration}
 
 \section{Source Code Architecture and Function Details}
-\subsection{Activity 1: Caesar Cipher (\texttt{activity1\_caesar/caesar.py})}
+\subsection{Activity 1: Caesar Cipher (\texttt{activity1\_caesar/\allowbreak caesar.py})}
 \begin{itemize}[leftmargin=1.5em]
     \item \textbf{\texttt{normalize\_key}}(\texttt{key: int}) $\to$ \texttt{int}:\\[2pt]
     Normalizes integer key via \texttt{key \% 26}. Validates that \texttt{key} is strictly an integer and explicitly disallows booleans (\texttt{isinstance(key, bool)}) to prevent Python's subclassing loophole (\texttt{bool} inherits from \texttt{int}).
@@ -755,7 +757,7 @@ The RSA-PSS pipeline implements asymmetric digital signing and public verificati
     Directly implemented as \texttt{encrypt(ciphertext, -key)}, mathematically leveraging the additive inverse property of $\mathbb{Z}_{26}$.
 \end{itemize}
 
-\subsection{Activity 2: Vigen\`ere Cipher (\texttt{activity2\_vigenere/vigenere.py})}
+\subsection{Activity 2: Vigen\`ere Cipher (\texttt{activity2\_vigenere/\allowbreak vigenere.py})}
 \begin{itemize}[leftmargin=1.5em]
     \item \textbf{\texttt{normalize\_key}}(\texttt{key: str}) $\to$ \texttt{str}:\\[2pt]
     Enforces that the key is a non-empty string consisting exclusively of ASCII alphabetic characters (\texttt{key.isalpha() and key.isascii()}). Normalizes key to uppercase.
@@ -765,7 +767,7 @@ The RSA-PSS pipeline implements asymmetric digital signing and public verificati
     Computes \texttt{(pos - shift) \% 26}, maintaining identical stream alignment rules to guarantee invertibility.
 \end{itemize}
 
-\subsection{Activity 3: One-Time Pad (\texttt{activity3\_one\_time\_pad/otp.py})}
+\subsection{Activity 3: One-Time Pad (\texttt{activity3\_one\_time\_pad/\allowbreak otp.py})}
 \begin{itemize}[leftmargin=1.5em]
     \item \textbf{\texttt{generate\_key}}(\texttt{length: int}) $\to$ \texttt{bytes}:\\[2pt]
     Invokes \texttt{secrets.token\_bytes(length)}, harnessing the OS cryptographically secure entropy pool (CryptGenRandom on Windows).
@@ -775,7 +777,7 @@ The RSA-PSS pipeline implements asymmetric digital signing and public verificati
     Accepts either UTF-8 text strings or arbitrary binary bytearrays. Decryption attempts UTF-8 decoding and returns a tuple \texttt{(decoded\_text, raw\_bytes)}, ensuring graceful handling when an invalid key produces non-decodable bytes.
 \end{itemize}
 
-\subsection{Activity 4: Digital Signature (\texttt{activity4\_digital\_signature/signature.py})}
+\subsection{Activity 4: Digital Signature (\texttt{activity4\_digital\_signature/\allowbreak signature.py})}
 \begin{itemize}[leftmargin=1.5em]
     \item \textbf{\texttt{generate\_key\_pair}}(\texttt{key\_size: int = 2048}):\\[2pt]
     Generates standard RSA key pairs using public exponent $e = 65537$ (the 4th Fermat prime $F_4$, optimal for mitigating Coppersmith attacks). Enforces minimum modulus size of 1024 bits.
@@ -828,7 +830,7 @@ Figure \ref{fig:screen_otp} captures the empirical collapse of secrecy under key
 \end{figure}
 
 \subsection{Activity 4: Digital Signature Tamper Detection Demonstration}
-Figure \ref{fig:screen_sig} records the four-stage verification and tamper-detection execution executed via \texttt{activity4\_digital\_signature/cli.py}:
+Figure \ref{fig:screen_sig} records the four-stage verification and tamper-detection execution executed via \texttt{activity4\_digital\_signature/\allowbreak cli.py}:
 \begin{enumerate}
     \item \textbf{Stage 1: Keypair Generation and Public Key Fingerprint}: An industrial 2048-bit RSA keypair is generated ($e = 65537$). The SubjectPublicKeyInfo DER encoding is digested to yield a canonical SHA-256 fingerprint for public key identity binding.
     \item \textbf{Stage 2: Authentic Message Signing}: The authentic financial order \texttt{"Transfer \$5,000 to Bob"} is signed with RSA-PSS using SHA-256 and randomized salt, producing a 256-byte digital signature.
