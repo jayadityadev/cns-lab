@@ -509,22 +509,23 @@ Classical substitution ciphers (Activities 1 and 2) operate on discrete characte
 \centering
 \begin{tikzpicture}[
     auto,
-    node distance = 0.38cm and 0.65cm,
-    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=8.5em, text centered, rounded corners=3pt, minimum height=1.7em, font=\fontsize{7.5}{9.5}\selectfont},
-    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=5.8em, text badly centered, inner sep=1pt, font=\fontsize{7}{8.5}\selectfont},
-    line/.style = {draw=ksitmaroon!90, -{Latex[length=2.0mm]}, semithick}
+    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=7.2em, text centered, rounded corners=3pt, minimum height=1.65em, font=\fontsize{7}{8.8}\selectfont},
+    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=4.8em, text badly centered, inner sep=1pt, font=\fontsize{6.5}{8}\selectfont},
+    line/.style = {draw=ksitmaroon!90, -{Latex[length=1.8mm]}, semithick}
 ]
-    % Left side: Caesar Cipher
-    \node [flowblock, fill=ksitmaroon!12] (c_title) {\textbf{Caesar Cipher (Shift)}};
-    \node [flowblock, below=0.3cm of c_title] (c_input) {Plaintext $P$, Shift $K \in \mathbb{Z}$};
-    \node [flowblock, below=0.3cm of c_input] (c_norm) {Normalize Shift\\[2pt] $K \gets K \bmod 26$};
-    \node [flowblock, below=0.3cm of c_norm] (c_loop) {Fetch Next Char $c \in P$};
-    \node [decision, below=0.3cm of c_loop] (c_alpha) {Is $c$ Alphabetic?};
-    \node [flowblock, below left=0.35cm and -0.4cm of c_alpha] (c_shift) {$(c - \text{base} + K) \bmod 26$};
-    \node [flowblock, below right=0.35cm and -0.4cm of c_alpha] (c_pres) {Preserve Verbatim};
-    \node [flowblock, below=1.25cm of c_alpha] (c_join) {Append to Output $C$};
-    \node [decision, below=0.3cm of c_join] (c_more) {More Chars?};
-    \node [flowblock, below=0.3cm of c_more] (c_done) {Return Ciphertext $C$};
+    % --------------------------------------------------------------------------
+    % Column 1: Caesar Cipher (Centered at x = 0.0)
+    % --------------------------------------------------------------------------
+    \node [flowblock, fill=ksitmaroon!12] (c_title) at (0, 0) {\textbf{Caesar Cipher (Shift)}};
+    \node [flowblock] (c_input) at (0, -0.62) {Plaintext $P$, Key $K \in \mathbb{Z}$};
+    \node [flowblock] (c_norm) at (0, -1.24) {Normalize Shift\\[1pt] $K \gets K \bmod 26$};
+    \node [flowblock] (c_loop) at (0, -1.86) {Fetch Next Char $c \in P$};
+    \node [decision] (c_alpha) at (0, -2.70) {Is $c \in \Sigma_{\text{alpha}}$?};
+    \node [flowblock] (c_shift) at (-1.35, -3.55) {Modular Shift:\\[1pt] $(c - \text{base} + K) \bmod 26$};
+    \node [flowblock] (c_pres) at (1.35, -3.55) {Preserve $c$\\[1pt] Verbatim};
+    \node [flowblock] (c_join) at (0, -4.40) {Append to Output $C$};
+    \node [decision] (c_more) at (0, -5.20) {More Chars?};
+    \node [flowblock] (c_done) at (0, -6.00) {Return Ciphertext $C$};
 
     \draw [line] (c_title) -- (c_input);
     \draw [line] (c_input) -- (c_norm);
@@ -536,19 +537,22 @@ Classical substitution ciphers (Activities 1 and 2) operate on discrete characte
     \draw [line] (c_pres) |- (c_join);
     \draw [line] (c_join) -- (c_more);
     \draw [line] (c_more) -- node [near start, right] {\scriptsize No} (c_done);
-    \draw [line] (c_more.west) -- ++(-0.55,0) |- node [near start, left] {\scriptsize Yes} (c_loop.west);
+    % Loop-back safely routes around c_shift at x = -2.85
+    \draw [line] (c_more.west) -- (-2.85, -5.20) |- node [near end, left] {\scriptsize Yes} (c_loop.west);
 
-    % Right side: Vigenere Cipher
-    \node [flowblock, fill=ksitmaroon!12, right=3.3cm of c_title] (v_title) {\textbf{Vigen\`ere (Polyalphabetic)}};
-    \node [flowblock, below=0.3cm of v_title] (v_input) {Plaintext $P$, Key String $K$};
-    \node [flowblock, below=0.3cm of v_input] (v_norm) {Validate \& Uppercase\\Init Key Index $j = 0$};
-    \node [flowblock, below=0.3cm of v_norm] (v_loop) {Fetch Next Char $c \in P$};
-    \node [decision, below=0.3cm of v_loop] (v_alpha) {Is $c$ Alphabetic?};
-    \node [flowblock, below left=0.35cm and -0.4cm of v_alpha] (v_shift) {Tabula Recta Shift\\Advance $j \gets j + 1$};
-    \node [flowblock, below right=0.35cm and -0.4cm of v_alpha] (v_pres) {Preserve Verbatim\\Pause Pointer ($j$)};
-    \node [flowblock, below=1.25cm of v_alpha] (v_join) {Append to Output $C$};
-    \node [decision, below=0.3cm of v_join] (v_more) {More Chars?};
-    \node [flowblock, below=0.3cm of v_more] (v_done) {Return Ciphertext $C$};
+    % --------------------------------------------------------------------------
+    % Column 2: Vigenere Cipher (Centered at x = 8.5)
+    % --------------------------------------------------------------------------
+    \node [flowblock, fill=ksitmaroon!12] (v_title) at (8.5, 0) {\textbf{Vigen\`ere (Polyalphabetic)}};
+    \node [flowblock] (v_input) at (8.5, -0.62) {Plaintext $P$, Key $K \in \Sigma^+$};
+    \node [flowblock] (v_norm) at (8.5, -1.24) {Validate \& Uppercase\\Init Key Index $j = 0$};
+    \node [flowblock] (v_loop) at (8.5, -1.86) {Fetch Next Char $c \in P$};
+    \node [decision] (v_alpha) at (8.5, -2.70) {Is $c \in \Sigma_{\text{alpha}}$?};
+    \node [flowblock] (v_shift) at (7.15, -3.55) {Tabula Recta Shift\\Advance $j \gets j + 1$};
+    \node [flowblock] (v_pres) at (9.85, -3.55) {Preserve Verbatim\\Pause Pointer ($j$)};
+    \node [flowblock] (v_join) at (8.5, -4.40) {Append to Output $C$};
+    \node [decision] (v_more) at (8.5, -5.20) {More Chars?};
+    \node [flowblock] (v_done) at (8.5, -6.00) {Return Ciphertext $C$};
 
     \draw [line] (v_title) -- (v_input);
     \draw [line] (v_input) -- (v_norm);
@@ -560,7 +564,8 @@ Classical substitution ciphers (Activities 1 and 2) operate on discrete characte
     \draw [line] (v_pres) |- (v_join);
     \draw [line] (v_join) -- (v_more);
     \draw [line] (v_more) -- node [near start, right] {\scriptsize No} (v_done);
-    \draw [line] (v_more.east) -- ++(0.55,0) |- node [near start, right] {\scriptsize Yes} (v_loop.east);
+    % Loop-back safely routes around v_pres at x = 11.35
+    \draw [line] (v_more.east) -- (11.35, -5.20) |- node [near end, right] {\scriptsize Yes} (v_loop.east);
 \end{tikzpicture}
 \caption{Flowcharts for Classical Substitution Operations (Caesar and Vigen\`ere Pipelines)}
 \label{fig:classical_flow}
@@ -589,19 +594,21 @@ Modern cryptographic engineering processes arbitrary binary octets through mathe
 \centering
 \begin{tikzpicture}[
     auto,
-    node distance = 0.5cm and 0.75cm,
-    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=8.8em, text centered, rounded corners=3pt, minimum height=1.75em, font=\fontsize{7.5}{9.5}\selectfont},
-    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=6.2em, text badly centered, inner sep=1pt, font=\fontsize{7}{8.5}\selectfont},
-    line/.style = {draw=ksitmaroon!90, -{Latex[length=2.2mm]}, semithick}
+    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=7.6em, text centered, rounded corners=3pt, minimum height=1.65em, font=\fontsize{7}{8.8}\selectfont},
+    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=5.0em, text badly centered, inner sep=1pt, font=\fontsize{6.5}{8}\selectfont},
+    line/.style = {draw=ksitmaroon!90, -{Latex[length=1.8mm]}, semithick}
 ]
-    % Left side: One-Time Pad
-    \node [flowblock, fill=ksitmaroon!12] (otp_title) {\textbf{One-Time Pad (XOR)}};
-    \node [flowblock, below=0.35cm of otp_title] (otp_msg) {Plaintext $M \in \{0,1\}^8$};
-    \node [flowblock, below=0.35cm of otp_msg] (otp_key) {CSPRNG Key $K$\\(\texttt{secrets.token\_bytes})};
-    \node [decision, below=0.35cm of otp_key] (otp_check) {$\text{len}(M) == \text{len}(K)$?};
-    \node [flowblock, below=0.4cm of otp_check] (otp_xor) {Bitwise XOR Encrypt\\$C_i = M_i \oplus K_i$};
-    \node [flowblock, below=0.35cm of otp_xor] (otp_dec) {Bitwise XOR Decrypt\\$M'_i = C_i \oplus K_i = M_i$};
-    \node [flowblock, right=0.55cm of otp_check] (otp_err) {Raise \texttt{ValueError}};
+    % --------------------------------------------------------------------------
+    % Column 1: One-Time Pad (Centered at x = 0.0)
+    % --------------------------------------------------------------------------
+    \node [flowblock, fill=ksitmaroon!12] (otp_title) at (0, 0) {\textbf{One-Time Pad (XOR)}};
+    \node [flowblock] (otp_msg) at (0, -0.65) {Plaintext $M \in \{0,1\}^8$};
+    \node [flowblock] (otp_key) at (0, -1.30) {CSPRNG Key $K$\\(\texttt{secrets.token\_bytes})};
+    \node [decision] (otp_check) at (0, -2.15) {$|M| == |K|$?};
+    % Branch NO to the LEFT: keeps the center corridor wide open!
+    \node [flowblock] (otp_err) at (-2.35, -2.15) {Raise \texttt{ValueError}};
+    \node [flowblock] (otp_xor) at (0, -3.10) {Bitwise XOR Encrypt\\$C_i = M_i \oplus K_i$};
+    \node [flowblock] (otp_dec) at (0, -3.85) {Bitwise XOR Decrypt\\$M'_i = C_i \oplus K_i = M_i$};
 
     \draw [line] (otp_title) -- (otp_msg);
     \draw [line] (otp_msg) -- (otp_key);
@@ -610,14 +617,16 @@ Modern cryptographic engineering processes arbitrary binary octets through mathe
     \draw [line] (otp_check) -- node [near start, above] {\scriptsize No} (otp_err);
     \draw [line] (otp_xor) -- (otp_dec);
 
-    % Right side: RSA-PSS Digital Signature
-    \node [flowblock, fill=ksitmaroon!12, right=3.3cm of otp_title] (rsa_title) {\textbf{RSA-PSS Signature}};
-    \node [flowblock, below=0.35cm of rsa_title] (rsa_msg) {Message $M$ $\to$ SHA-256\\$h = \text{Hash}(M)$};
-    \node [flowblock, below=0.35cm of rsa_msg] (rsa_pss) {Probabilistic Encoding\\$\mu = \text{PSS-Encode}(h, \text{salt})$};
-    \node [flowblock, below=0.35cm of rsa_pss] (rsa_sign) {Modular Exponentiation\\$S = \mu^d \pmod n$ (Sign)};
-    \node [decision, below=0.35cm of rsa_sign] (rsa_ver) {$\mu' = S^e \bmod n$\\Verify $h' == h$?};
-    \node [flowblock, below left=0.4cm and -0.4cm of rsa_ver] (rsa_ok) {\textbf{VALID}: Intact\\Authenticity Assured};
-    \node [flowblock, below right=0.4cm and -0.4cm of rsa_ver] (rsa_tamper) {\textbf{INVALID}: Rejected\\Tampering Detected};
+    % --------------------------------------------------------------------------
+    % Column 2: RSA-PSS Digital Signature (Centered at x = 7.5)
+    % --------------------------------------------------------------------------
+    \node [flowblock, fill=ksitmaroon!12] (rsa_title) at (7.5, 0) {\textbf{RSA-PSS Signature}};
+    \node [flowblock] (rsa_msg) at (7.5, -0.65) {Message $M \to$ SHA-256\\$h = \text{Hash}(M)$};
+    \node [flowblock] (rsa_pss) at (7.5, -1.30) {Probabilistic Encoding\\$\mu = \text{PSS-Encode}(h, \text{salt})$};
+    \node [flowblock] (rsa_sign) at (7.5, -2.05) {Modular Exponentiation\\$S = \mu^d \pmod n$ (Sign)};
+    \node [decision] (rsa_ver) at (7.5, -2.95) {$\mu' = S^e \bmod n$\\$h' == h$?};
+    \node [flowblock] (rsa_ok) at (6.05, -3.85) {\textbf{VALID}: Intact\\Authenticity Assured};
+    \node [flowblock] (rsa_tamper) at (8.95, -3.85) {\textbf{INVALID}: Rejected\\Tampering Detected};
 
     \draw [line] (rsa_title) -- (rsa_msg);
     \draw [line] (rsa_msg) -- (rsa_pss);
