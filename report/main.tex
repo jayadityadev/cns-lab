@@ -1,9 +1,10 @@
 \documentclass[12pt,a4paper]{report}
 
-\usepackage[margin=1in,left=1.25in,top=1in,bottom=1in]{geometry}
+\usepackage[left=0.85in,right=0.85in,top=0.9in,bottom=0.9in]{geometry}
 \usepackage{mathptmx} % Times New Roman font for text and math
 \usepackage{setspace}
 \onehalfspacing % 1.5 line spacing standard for VTU/KSIT
+\setlength{\emergencystretch}{2em}
 
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{booktabs,tabularx,multirow,longtable}
@@ -11,10 +12,13 @@
 \usepackage{listings}
 \usepackage{fancyhdr}
 \usepackage{caption}
+\usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage{titlesec}
 \usepackage{graphicx}
 \usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, fit}
 
 % Institutional Colors
 \definecolor{ksitmaroon}{RGB}{128, 0, 0}
@@ -151,13 +155,15 @@ In addition to software verification, this report provides deep mathematical cry
 
 \begin{table}[h!]
 \centering
-\fontsize{11}{14}\selectfont
-\begin{tabular}{|c|p{4.2in}|c|}
+\fontsize{10.5}{13.5}\selectfont
+\begin{tabular}{|c|p{4.7in}|c|}
 \hline
 \rowcolor{tableheader}
 \textbf{Chapter No.} & \multicolumn{1}{c|}{\textbf{Title}} & \textbf{Page No.} \\
 \hline
 & \textbf{ABSTRACT} & \textbf{i} \\
+\hline
+& \textbf{PROJECT PRESENTATION AND TEAM ROSTER} & \textbf{iv} \\
 \hline
 \textbf{1.} & \textbf{INTRODUCTION AND OBJECTIVES} & \textbf{1} \\
 & 1.1 Background and Problem Statement & 1 \\
@@ -174,31 +180,31 @@ In addition to software verification, this report provides deep mathematical cry
 & 3.2 Modular Repository Organization & 4 \\
 \hline
 \textbf{4.} & \textbf{ALGORITHMIC DESIGN AND METHODOLOGY} & \textbf{5} \\
-& 4.1 Algorithmic Pseudocode & 5 \\
-& 4.2 Architectural Pipeline Flowcharts & 5 \\
+& 4.1 Algorithmic Pseudocode and Core Implementations & 5 \\
+& 4.2 Architectural Pipeline Flowcharts & 6 \\
 \hline
-\textbf{5.} & \textbf{IMPLEMENTATION AND RUNTIME DEMONSTRATION} & \textbf{7} \\
-& 5.1 Source Code Architecture and Function Details & 7 \\
-& 5.2 Genuine Terminal Execution Transcripts & 8 \\
-& 5.3 Character and Byte Data Flow Pipelines & 9 \\
+\textbf{5.} & \textbf{IMPLEMENTATION AND RUNTIME DEMONSTRATION} & \textbf{8} \\
+& 5.1 Source Code Architecture and Function Details & 8 \\
+& 5.2 Runtime Execution Demonstrations and Verification Screenshots & 9 \\
+& 5.3 Character and Byte Data Flow Pipelines & 11 \\
 \hline
-\textbf{6.} & \textbf{TESTING METHODOLOGY AND VERIFICATION MATRIX} & \textbf{11} \\
-& 6.1 Systematic Verification Strategy & 11 \\
-& 6.2 Exhaustive 69-Test Verification Matrix & 11 \\
+\textbf{6.} & \textbf{TESTING METHODOLOGY AND VERIFICATION MATRIX} & \textbf{13} \\
+& 6.1 Systematic Verification Strategy & 13 \\
+& 6.2 Exhaustive 69-Test Verification Matrix & 13 \\
 \hline
-\textbf{7.} & \textbf{SECURITY ANALYSIS AND CRYPTANALYSIS} & \textbf{13} \\
-& 7.1 Monoalphabetic Cryptanalysis & 13 \\
-& 7.2 Polyalphabetic Cryptanalysis & 13 \\
-& 7.3 Information-Theoretic Perfect Secrecy & 14 \\
-& 7.4 Asymmetric Signature Security and PKI & 15 \\
+\textbf{7.} & \textbf{SECURITY ANALYSIS AND CRYPTANALYSIS} & \textbf{15} \\
+& 7.1 Monoalphabetic Cryptanalysis & 15 \\
+& 7.2 Polyalphabetic Cryptanalysis & 15 \\
+& 7.3 Information-Theoretic Perfect Secrecy & 16 \\
+& 7.4 Asymmetric Signature Security and PKI & 16 \\
 \hline
-\textbf{8.} & \textbf{APPLICATIONS AND CONCLUSION} & \textbf{16} \\
-& 8.1 Historical and Modern Applications & 16 \\
-& 8.2 Conclusion & 16 \\
+\textbf{8.} & \textbf{APPLICATIONS AND CONCLUSION} & \textbf{18} \\
+& 8.1 Historical and Modern Applications & 18 \\
+& 8.2 Conclusion & 18 \\
 \hline
-& \textbf{REFERENCES} & \textbf{17} \\
+& \textbf{REFERENCES} & \textbf{19} \\
 \hline
-& \textbf{GROUP CONTRIBUTION MATRIX} & \textbf{18} \\
+& \textbf{GROUP CONTRIBUTION MATRIX} & \textbf{20} \\
 \hline
 \end{tabular}
 \end{table}
@@ -214,20 +220,38 @@ In addition to software verification, this report provides deep mathematical cry
 
 \begin{table}[h!]
 \centering
-\fontsize{11}{14}\selectfont
-\begin{tabular}{|c|p{4.2in}|c|}
+\fontsize{9.5}{12}\selectfont
+\begin{tabular}{|c|p{4.8in}|c|}
 \hline
 \rowcolor{tableheader}
 \textbf{Figure No.} & \multicolumn{1}{c|}{\textbf{Figure Title}} & \textbf{Page No.} \\
 \hline
-Fig 4.1 & Flowchart for Classical Substitution Operations (Activities 1 \& 2) & 6 \\
+Fig 4.1 & Caesar Cipher Modular Encryption Logic & 5 \\
 \hline
-Fig 4.2 & Flowchart for Modern Cryptographic Primitives (Activities 3 \& 4) & 6 \\
+Fig 4.2 & Vigen\`ere Polyalphabetic Encryption Logic & 5 \\
+\hline
+Fig 4.3 & One-Time Pad Bytewise XOR Logic & 5 \\
+\hline
+Fig 4.4 & RSA-PSS Digital Signature Logic & 5 \\
+\hline
+Fig 4.5 & Flowchart for Classical Substitution Operations (Activities 1 \& 2) & 6 \\
+\hline
+Fig 4.6 & Flowchart for Modern Cryptographic Primitives (Activities 3 \& 4) & 7 \\
+\hline
+Fig 5.1 & Interactive Unified Terminal Interface Entry Point (\texttt{main.py}) & 9 \\
+\hline
+Fig 5.2 & Caesar Cipher CLI Execution and Invertibility Verification & 10 \\
+\hline
+Fig 5.3 & Vigen\`ere Cipher CLI Execution and Stream Synchronization & 10 \\
+\hline
+Fig 5.4 & One-Time Pad Execution and Catastrophic Two-Time Pad Attack & 10 \\
+\hline
+Fig 5.5 & RSA-PSS Digital Signature 4-Stage Tamper Detection Execution & 11 \\
 \hline
 \end{tabular}
 \end{table}
 
-\vspace{2em}
+\vspace{1.5em}
 
 % ------------------------------------------------------------------------------
 % LIST OF TABLES (GRID TABLE FORMAT)
@@ -238,25 +262,60 @@ Fig 4.2 & Flowchart for Modern Cryptographic Primitives (Activities 3 \& 4) & 6 
 
 \begin{table}[h!]
 \centering
-\fontsize{11}{14}\selectfont
-\begin{tabular}{|c|p{4.2in}|c|}
+\fontsize{9.5}{12}\selectfont
+\begin{tabular}{|c|p{4.8in}|c|}
 \hline
 \rowcolor{tableheader}
 \textbf{Table No.} & \multicolumn{1}{c|}{\textbf{Table Title}} & \textbf{Page No.} \\
 \hline
 Table 3.1 & Software Toolchain and Verified Dependencies & 4 \\
 \hline
-Table 5.1 & Caesar Cipher Character Data Flow Pipeline Trace & 9 \\
+Table 5.1 & Caesar Cipher Character Data Flow Pipeline Trace ($K = 3$) & 11 \\
 \hline
-Table 5.2 & Vigen\`ere Polyalphabetic Keyword Alignment Pipeline Trace & 10 \\
+Table 5.2 & Vigen\`ere Polyalphabetic Keyword Alignment Pipeline Trace & 11 \\
 \hline
-Table 5.3 & One-Time Pad Bytewise XOR Transformation Pipeline Trace & 10 \\
+Table 5.3 & One-Time Pad Bytewise XOR Transformation Pipeline Trace & 12 \\
 \hline
-Table 6.1 & Complete 69-Test Verification Matrix Across All Packages & 11 \\
+Table 6.1 & Complete 69-Test Verification Matrix Across All Packages & 13 \\
 \hline
-Table 7.1 & Comparative Evaluation of Implemented Cryptosystems & 15 \\
+Table 7.1 & Comparative Evaluation of Implemented Cryptosystems & 17 \\
 \hline
-Table 8.1 & Group Contribution and Deliverable Ownership Matrix & 18 \\
+Table 8.1 & Group Contribution and Deliverable Ownership Matrix & 20 \\
+\hline
+\end{tabular}
+\end{table}
+
+\newpage
+
+% ------------------------------------------------------------------------------
+% PROJECT PRESENTATION PHOTOGRAPH & TEAM ROSTER
+% ------------------------------------------------------------------------------
+\thispagestyle{preliminary}
+\begin{center}
+    {\fontsize{14}{16}\bfseries PROJECT PRESENTATION AND TEAM ROSTER}\\[0.6em]
+    {\fontsize{11}{13}\selectfont\textbf{Department of Computer Science and Engineering}}\\[0.2em]
+    {\fontsize{10}{12}\selectfont\textbf{K.S. Institute of Technology, Bengaluru -- 560109}}\\[1.5em]
+
+    \fbox{\includegraphics[width=\dimexpr0.92\linewidth-2\fboxsep-2\fboxrule\relax,height=3.6in,keepaspectratio=false]{figures/team_presentation.jpg}}\\[0.8em]
+    {\small\textit{Figure: Official Project Presentation and Technical Defense Team --- Batch \texttt{2026\_CNS\_A\_01}}}\\[1.5em]
+\end{center}
+
+\begin{table}[h!]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{|c|l|l|p{3.5in}|}
+\hline
+\rowcolor{tableheader}
+\textbf{Sl.} & \textbf{USN} & \textbf{Student Name} & \textbf{Assigned Module \& Course Outcome} \\
+\hline
+1 & \texttt{1KS23CS059} & \textbf{Jayaditya Dev} & Interactive TUI Architecture \& RSA-PSS Digital Signatures (CO3) \\
+\hline
+2 & \texttt{1KS23CS043} & \textbf{Durgashree M} & One-Time Pad CSPRNG \& Two-Time Pad Attack (CO3) \\
+\hline
+3 & \texttt{1KS23CS020} & \textbf{Aryaman Tiwari} & Vigen\`ere Cipher, Tabula Recta \& Kasiski Cryptanalysis (CO4) \\
+\hline
+4 & \texttt{1KS23CS034} & \textbf{Chirag T} & Caesar Cipher Modular Logic \& Frequency Analysis (CO1) \\
 \hline
 \end{tabular}
 \end{table}
@@ -429,131 +488,125 @@ cns/
 % ==============================================================================
 \chapter{Algorithmic Design and Methodology}
 
-\section{Algorithmic Pseudocode}
-The core cryptographic operations matching the codebase are formally defined below:
+\section{Algorithmic Pseudocode and Core Implementations}
+The core cryptographic transformation routines matching the verified Python package implementations are documented in Figures \ref{fig:code_caesar}--\ref{fig:code_rsa}:
 
+\begin{figure}[h!]
+\centering
 \begin{minipage}[t]{0.485\linewidth}
-\begin{lstlisting}[caption={Caesar Modular Encryption}]
-Algorithm CaesarEncrypt(P, K):
-    shift = K mod 26
-    C = empty string
-    for each char in P:
-        if 'a' <= char <= 'z':
-            pos = ord(char) - ord('a')
-            C += chr((pos + shift) mod 26 + ord('a'))
-        else if 'A' <= char <= 'Z':
-            pos = ord(char) - ord('A')
-            C += chr((pos + shift) mod 26 + ord('A'))
-        else:
-            C += char
-    return C
-\end{lstlisting}
+    \centering
+    \fbox{\includegraphics[width=\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax,height=1.85in,keepaspectratio=false]{figures/code/listing4_1_caesar.jpg}}
+    \caption{Caesar Cipher Modular Encryption Logic}
+    \label{fig:code_caesar}
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.485\linewidth}
-\begin{lstlisting}[caption={Vigenere Encryption}]
-Algorithm VigenereEncrypt(P, K):
-    clean_k = NormalizeKey(K)
-    L = Length(clean_k)
-    k_idx = 0
-    C = empty string
-    for each char in P:
-        if char is alphabetic:
-            shift = ord(clean_k[k_idx mod L]) - ord('A')
-            base = ord('a') if islower(char) else ord('A')
-            pos = ord(char) - base
-            C += chr((pos + shift) mod 26 + base)
-            k_idx += 1
-        else:
-            C += char
-    return C
-\end{lstlisting}
+    \centering
+    \fbox{\includegraphics[width=\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax,height=1.85in,keepaspectratio=false]{figures/code/listing4_2_vigenere.jpg}}
+    \caption{Vigen\`ere Polyalphabetic Encryption Logic}
+    \label{fig:code_vigenere}
 \end{minipage}
 
-\vspace{0.8em}
+\vspace{1em}
 
 \begin{minipage}[t]{0.485\linewidth}
-\begin{lstlisting}[caption={One-Time Pad Bytewise XOR}]
-Algorithm OTPEncrypt(M_bytes, K_bytes):
-    if Length(M_bytes) != Length(K_bytes):
-        raise ValueError("Length mismatch")
-    C_bytes = bytearray(Length(M_bytes))
-    for i from 0 to Length(M_bytes) - 1:
-        C_bytes[i] = M_bytes[i] XOR K_bytes[i]
-    return bytes(C_bytes)
-\end{lstlisting}
+    \centering
+    \fbox{\includegraphics[width=\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax,height=1.85in,keepaspectratio=false]{figures/code/listing4_3_otp.jpg}}
+    \caption{One-Time Pad Bytewise XOR Logic}
+    \label{fig:code_otp}
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.485\linewidth}
-\begin{lstlisting}[caption={RSA-PSS Digital Signature}]
-Algorithm RSAPSSSign(M, private_key):
-    data = UTF8Encode(M)
-    return private_key.sign(
-        data,
-        padding.PSS(mgf=padding.MGF1(hashes.SHA256()), 
-                    salt_length=MAX_LENGTH),
-        hashes.SHA256()
-    )
-\end{lstlisting}
+    \centering
+    \fbox{\includegraphics[width=\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax,height=1.85in,keepaspectratio=false]{figures/code/listing4_4_rsa.jpg}}
+    \caption{RSA-PSS Digital Signature Logic}
+    \label{fig:code_rsa}
 \end{minipage}
+\end{figure}
 
 \section{Architectural Pipeline Flowcharts}
 
 \begin{figure}[h!]
 \centering
-\begin{lstlisting}
-+------------------------------------------------------------------------+
-|             CLASSICAL CIPHER FLOWCHART (CAESAR & VIGENERE)             |
-+------------------------------------------------------------------------+
-  [Input Text P, Key K] ---> {Valid Key?} ---> (NO) ---> [Raise Error]
-                                  | (YES)
-                                  v
-                        [Normalize Key (mod 26 / Uppercase)]
-                                  |
-                                  v
-                       +--[Loop Char c in P]--+
-                       |                      |
-                {Is c alphabetic?}            |
-                   /          \               |
-              (YES)/            \(NO)         |
-                  v              v            |
-            [Compute Shift]  [Preserve]       |
-            [Advance Index]  [Pause Pointer]  |
-                   \            /             |
-                    v          v              |
-                [Append to Ciphertext C]      |
-                       |                      |
-                       +---{More chars?}------+ (Loop back)
-                                  | (NO)
-                                  v
-                       [Return Output C]
-\end{lstlisting}
+\begin{tikzpicture}[
+    auto,
+    node distance = 0.65cm and 0.9cm,
+    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=9.5em, text centered, rounded corners=3pt, minimum height=1.9em, font=\fontsize{8.5}{10.5}\selectfont},
+    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=6.5em, text badly centered, inner sep=1pt, font=\fontsize{8}{9.5}\selectfont},
+    line/.style = {draw=ksitmaroon!90, -{Latex[length=2.2mm]}, semithick}
+]
+    \node [flowblock] (start) {Input Text $P$, Key $K$};
+    \node [decision, below=0.5cm of start] (valid) {Valid Key?};
+    \node [flowblock, right=1.2cm of valid] (err) {Raise \texttt{ValueError}};
+    \node [flowblock, below=0.5cm of valid] (norm) {Normalize Key\\[2pt] ($K \bmod 26$ / Uppercase)};
+    \node [flowblock, below=0.5cm of norm] (loop) {Fetch Next Char $c \in P$};
+    \node [decision, below=0.5cm of loop] (alpha) {Is $c$ Alphabetic?};
+    \node [flowblock, below left=0.5cm and 0.2cm of alpha] (shift) {Compute Shift \& Map\\Advance Stream Pointer};
+    \node [flowblock, below right=0.5cm and 0.2cm of alpha] (preserve) {Preserve Verbatim\\Pause Stream Pointer};
+    \node [flowblock, below=1.7cm of alpha] (append) {Append to Ciphertext $C$};
+    \node [decision, below=0.5cm of append] (more) {More Chars?};
+    \node [flowblock, below=0.5cm of more] (finish) {Return Ciphertext $C$};
+
+    \draw [line] (start) -- (valid);
+    \draw [line] (valid) -- node [near start, right] {\scriptsize Yes} (norm);
+    \draw [line] (valid) -- node [near start, above] {\scriptsize No} (err);
+    \draw [line] (norm) -- (loop);
+    \draw [line] (loop) -- (alpha);
+    \draw [line] (alpha) -| node [near start, above] {\scriptsize Yes} (shift);
+    \draw [line] (alpha) -| node [near start, above] {\scriptsize No} (preserve);
+    \draw [line] (shift) |- (append);
+    \draw [line] (preserve) |- (append);
+    \draw [line] (append) -- (more);
+    \draw [line] (more) -- node [near start, right] {\scriptsize No} (finish);
+    \draw [line] (more.east) -- ++(2.5,0) |- node [near start, right] {\scriptsize Yes} (loop.east);
+\end{tikzpicture}
 \caption{Flowchart for Classical Substitution Operations (Activities 1 \& 2)}
 \label{fig:classical_flow}
 \end{figure}
 
+\vspace{0.5em}
+
 \begin{figure}[h!]
 \centering
-\begin{lstlisting}
-+------------------------------------------------------------------------+
-|         MODERN CRYPTOGRAPHIC SYSTEMS FLOWCHART (OTP & RSA-PSS)         |
-+------------------------------------------------------------------------+
-       ONE-TIME PAD (STREAM XOR)                  RSA-PSS DIGITAL SIGNATURE
-  [Message M] ---> [UTF-8 Bytes]              [Message M] ---> [SHA-256 Digest]
-         |                                                    |
-         v                                                    v
-  [CSPRNG Key (secrets.token_bytes)]          [Random Salt PSS Encoding: mu]
-         |                                                    |
-  {len(M) == len(K)?}                                         v
-     /        \                                       [S = mu^d mod n (Sign)]
- (YES)        (NO)                                            |
-   v            v                                             v
-[Byte XOR]  [Raise Error]                             [Verify: S^e mod n == h]
-   |                                                      /             \
-   v                                                 (YES)/              \(NO)
-[Cipher C] ---> [XOR with K -> Recover M]                v                v
-                                                   [VALID: Ok]    [INVALID: Tampered]
-\end{lstlisting}
+\begin{tikzpicture}[
+    auto,
+    node distance = 0.55cm and 0.8cm,
+    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=8.8em, text centered, rounded corners=3pt, minimum height=1.8em, font=\fontsize{8}{10}\selectfont},
+    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=6.2em, text badly centered, inner sep=1pt, font=\fontsize{7.5}{9}\selectfont},
+    line/.style = {draw=ksitmaroon!90, -{Latex[length=2.2mm]}, semithick}
+]
+    % Left side: One-Time Pad
+    \node [flowblock, fill=ksitmaroon!12] (otp_title) {\textbf{One-Time Pad (XOR)}};
+    \node [flowblock, below=0.4cm of otp_title] (otp_msg) {Plaintext $M \in \{0,1\}^8$};
+    \node [flowblock, below=0.4cm of otp_msg] (otp_key) {CSPRNG Key $K$\\(\texttt{secrets.token\_bytes})};
+    \node [decision, below=0.4cm of otp_key] (otp_check) {$\text{len}(M) == \text{len}(K)$?};
+    \node [flowblock, below=0.45cm of otp_check] (otp_xor) {Bitwise XOR Encrypt\\$C_i = M_i \oplus K_i$};
+    \node [flowblock, below=0.4cm of otp_xor] (otp_dec) {Bitwise XOR Decrypt\\$M'_i = C_i \oplus K_i = M_i$};
+    \node [flowblock, right=0.6cm of otp_check] (otp_err) {Raise \texttt{ValueError}};
+
+    \draw [line] (otp_title) -- (otp_msg);
+    \draw [line] (otp_msg) -- (otp_key);
+    \draw [line] (otp_key) -- (otp_check);
+    \draw [line] (otp_check) -- node [near start, right] {\scriptsize Yes} (otp_xor);
+    \draw [line] (otp_check) -- node [near start, above] {\scriptsize No} (otp_err);
+    \draw [line] (otp_xor) -- (otp_dec);
+
+    % Right side: RSA-PSS Digital Signature
+    \node [flowblock, fill=ksitmaroon!12, right=3.4cm of otp_title] (rsa_title) {\textbf{RSA-PSS Signature}};
+    \node [flowblock, below=0.4cm of rsa_title] (rsa_msg) {Message $M$ $\to$ SHA-256\\$h = \text{Hash}(M)$};
+    \node [flowblock, below=0.4cm of rsa_msg] (rsa_pss) {Probabilistic Encoding\\$\mu = \text{PSS-Encode}(h, \text{salt})$};
+    \node [flowblock, below=0.4cm of rsa_pss] (rsa_sign) {Modular Exponentiation\\$S = \mu^d \pmod n$ (Sign)};
+    \node [decision, below=0.4cm of rsa_sign] (rsa_ver) {$\mu' = S^e \bmod n$\\Verify $h' == h$?};
+    \node [flowblock, below left=0.45cm and -0.4cm of rsa_ver] (rsa_ok) {\textbf{VALID}: Intact\\Authenticity Assured};
+    \node [flowblock, below right=0.45cm and -0.4cm of rsa_ver] (rsa_tamper) {\textbf{INVALID}: Rejected\\Tampering Detected};
+
+    \draw [line] (rsa_title) -- (rsa_msg);
+    \draw [line] (rsa_msg) -- (rsa_pss);
+    \draw [line] (rsa_pss) -- (rsa_sign);
+    \draw [line] (rsa_sign) -- (rsa_ver);
+    \draw [line] (rsa_ver) -| node [near start, above] {\scriptsize Yes} (rsa_ok);
+    \draw [line] (rsa_ver) -| node [near start, above] {\scriptsize No} (rsa_tamper);
+\end{tikzpicture}
 \caption{Flowchart for Modern Cryptographic Primitives (Activities 3 \& 4)}
 \label{fig:modern_flow}
 \end{figure}
@@ -567,110 +620,96 @@ Algorithm RSAPSSSign(M, private_key):
 
 \section{Source Code Architecture and Function Details}
 \subsection{Activity 1: Caesar Cipher (\texttt{activity1\_caesar/caesar.py})}
-\begin{itemize}
-    \item \texttt{normalize\_key(key: int) -> int}: Normalizes integer key via \texttt{key \% 26}. Validates that \texttt{key} is strictly an integer and explicitly disallows booleans (\texttt{isinstance(key, bool)}) to prevent Python's subclassing loophole (\texttt{bool} inherits from \texttt{int}).
-    \item \texttt{encrypt(plaintext: str, key: int) -> str}: Computes modular shifts relative to ASCII bases \texttt{'a'} and \texttt{'A'}, preserving non-alphabetic characters verbatim.
-    \item \texttt{decrypt(ciphertext: str, key: int) -> str}: Directly implemented as \texttt{encrypt(ciphertext, -key)}, mathematically leveraging the additive inverse property of $\mathbb{Z}_{26}$.
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{\texttt{normalize\_key}}(\texttt{key: int}) $\to$ \texttt{int}:\\[2pt]
+    Normalizes integer key via \texttt{key \% 26}. Validates that \texttt{key} is strictly an integer and explicitly disallows booleans (\texttt{isinstance(key, bool)}) to prevent Python's subclassing loophole (\texttt{bool} inherits from \texttt{int}).
+    \item \textbf{\texttt{encrypt}}(\texttt{plaintext: str, key: int}) $\to$ \texttt{str}:\\[2pt]
+    Computes modular shifts relative to ASCII bases \texttt{'a'} and \texttt{'A'}, preserving non-alphabetic characters verbatim.
+    \item \textbf{\texttt{decrypt}}(\texttt{ciphertext: str, key: int}) $\to$ \texttt{str}:\\[2pt]
+    Directly implemented as \texttt{encrypt(ciphertext, -key)}, mathematically leveraging the additive inverse property of $\mathbb{Z}_{26}$.
 \end{itemize}
 
 \subsection{Activity 2: Vigen\`ere Cipher (\texttt{activity2\_vigenere/vigenere.py})}
-\begin{itemize}
-    \item \texttt{normalize\_key(key: str) -> str}: Enforces that the key is a non-empty string consisting exclusively of ASCII alphabetic characters (\texttt{key.isalpha() and key.isascii()}). Normalizes key to uppercase.
-    \item \texttt{encrypt(plaintext: str, key: str) -> str}: Implements the key-stream pointer \texttt{key\_idx}. The pointer increments \textbf{strictly} when an alphabetic character is enciphered; non-alphabetic characters bypass shift computation and do \textbf{not} advance the stream.
-    \item \texttt{decrypt(ciphertext: str, key: str) -> str}: Computes \texttt{(pos - shift) \% 26}, maintaining identical stream alignment rules to guarantee invertibility.
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{\texttt{normalize\_key}}(\texttt{key: str}) $\to$ \texttt{str}:\\[2pt]
+    Enforces that the key is a non-empty string consisting exclusively of ASCII alphabetic characters (\texttt{key.isalpha() and key.isascii()}). Normalizes key to uppercase.
+    \item \textbf{\texttt{encrypt}}(\texttt{plaintext: str, key: str}) $\to$ \texttt{str}:\\[2pt]
+    Implements key-stream pointer \texttt{key\_idx}. The pointer increments \textbf{strictly} when an alphabetic character is enciphered; non-alphabetic characters bypass shift computation and do \textbf{not} advance the stream.
+    \item \textbf{\texttt{decrypt}}(\texttt{ciphertext: str, key: str}) $\to$ \texttt{str}:\\[2pt]
+    Computes \texttt{(pos - shift) \% 26}, maintaining identical stream alignment rules to guarantee invertibility.
 \end{itemize}
 
 \subsection{Activity 3: One-Time Pad (\texttt{activity3\_one\_time\_pad/otp.py})}
-\begin{itemize}
-    \item \texttt{generate\_key(length: int) -> bytes}: Invokes \texttt{secrets.token\_bytes(length)}, harnessing the OS cryptographically secure entropy pool (CryptGenRandom on Windows).
-    \item \texttt{xor\_bytes(data: bytes, key: bytes) -> bytes}: Computes byte-by-byte XOR using a list comprehension over \texttt{zip(data, key)}. Enforces strict length equality (\texttt{len(data) == len(key)}), raising a \texttt{ValueError} if lengths differ.
-    \item \texttt{encrypt(plaintext, key)} \& \texttt{decrypt(ciphertext, key)}: Accepts either UTF-8 text strings or arbitrary binary bytearrays. Decryption attempts UTF-8 decoding and returns a tuple \texttt{(decoded\_text, raw\_bytes)}, ensuring graceful handling when an invalid key produces non-decodable bytes.
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{\texttt{generate\_key}}(\texttt{length: int}) $\to$ \texttt{bytes}:\\[2pt]
+    Invokes \texttt{secrets.token\_bytes(length)}, harnessing the OS cryptographically secure entropy pool (CryptGenRandom on Windows).
+    \item \textbf{\texttt{xor\_bytes}}(\texttt{data: bytes, key: bytes}) $\to$ \texttt{bytes}:\\[2pt]
+    Computes byte-by-byte XOR using a list comprehension over \texttt{zip(data, key)}. Enforces strict length equality (\texttt{len(data) == len(key)}), raising a \texttt{ValueError} if lengths differ.
+    \item \textbf{\texttt{encrypt}}(\texttt{plaintext, key}) \& \textbf{\texttt{decrypt}}(\texttt{ciphertext, key}):\\[2pt]
+    Accepts either UTF-8 text strings or arbitrary binary bytearrays. Decryption attempts UTF-8 decoding and returns a tuple \texttt{(decoded\_text, raw\_bytes)}, ensuring graceful handling when an invalid key produces non-decodable bytes.
 \end{itemize}
 
 \subsection{Activity 4: Digital Signature (\texttt{activity4\_digital\_signature/signature.py})}
-\begin{itemize}
-    \item \texttt{generate\_key\_pair(key\_size: int = 2048)}: Generates standard RSA key pairs using public exponent $e = 65537$ (the 4th Fermat prime $F_4$, optimal for mitigating Coppersmith attacks). Enforces minimum modulus size of 1024 bits.
-    \item \texttt{sign\_message(message, private\_key) -> bytes}: Implements RSA-PSS with \texttt{hashes.SHA256()} and \texttt{padding.MGF1(hashes.SHA256())} with \texttt{salt\_length = padding.PSS.MAX\_LENGTH}.
-    \item \texttt{verify\_signature(message, signature, public\_key) -> bool}: Verifies the signature against the message digest. Catches \texttt{InvalidSignature} exceptions internally and returns a clean boolean status (\texttt{True}/\texttt{False}) to prevent timing side channels or uncontrolled crashes.
-    \item \texttt{get\_public\_key\_fingerprint(public\_key) -> str}: Computes the canonical SHA-256 hex fingerprint of the public key's DER-encoded \texttt{SubjectPublicKeyInfo} representation.
+\begin{itemize}[leftmargin=1.5em]
+    \item \textbf{\texttt{generate\_key\_pair}}(\texttt{key\_size: int = 2048}):\\[2pt]
+    Generates standard RSA key pairs using public exponent $e = 65537$ (the 4th Fermat prime $F_4$, optimal for mitigating Coppersmith attacks). Enforces minimum modulus size of 1024 bits.
+    \item \textbf{\texttt{sign\_message}}(\texttt{message, private\_key}) $\to$ \texttt{bytes}:\\[2pt]
+    Implements RSA-PSS with \texttt{hashes.SHA256()} and \texttt{padding.MGF1(hashes.SHA256())} with \texttt{salt\_length = padding.PSS.MAX\_LENGTH}.
+    \item \textbf{\texttt{verify\_signature}}(\texttt{message, signature, public\_key}) $\to$ \texttt{bool}:\\[2pt]
+    Verifies the signature against the message digest. Catches \texttt{InvalidSignature} exceptions internally and returns a clean boolean status (\texttt{True}/\texttt{False}) to prevent timing side channels or uncontrolled crashes.
+    \item \textbf{\texttt{get\_public\_key\_fingerprint}}(\texttt{public\_key}) $\to$ \texttt{str}:\\[2pt]
+    Computes canonical SHA-256 hex fingerprint of the public key's DER-encoded \texttt{Subject}\allowbreak\texttt{PublicKey}\allowbreak\texttt{Info} representation.
 \end{itemize}
 
-\section{Genuine Terminal Execution Transcripts}
+\section{Runtime Execution Demonstrations and Verification Screenshots}
+Execution demonstrations were performed across all laboratory packages starting from the interactive \texttt{main.py} entry point through independent CLI execution runners. Figures \ref{fig:screen_main}--\ref{fig:screen_sig} display the verified execution captures:
+
+\begin{figure}[h!]
+\centering
+\fbox{\includegraphics[width=\dimexpr0.92\linewidth-2\fboxsep-2\fboxrule\relax,height=2.2in,keepaspectratio=false]{figures/screenshots/screenshot_01_tui_main.png}}
+\caption{Interactive Unified Terminal Interface Entry Point (\texttt{main.py})}
+\label{fig:screen_main}
+\end{figure}
 
 \subsection{Activity 1: Caesar Cipher Demonstration}
-\begin{lstlisting}
-$ uv run python activity1_caesar/cli.py -p "CNS Lab: Activity-01 @ 2026!" -k 3
+Figure \ref{fig:screen_caesar} confirms runtime execution with plaintext \texttt{"CNS Lab: Activity-01 @ 2026!"} and key $K = 3$. Shift normalization maps $K \equiv 3 \pmod{26}$, enciphering to \texttt{"FQV Ode: Dfwlylwb-01 @ 2026!"} and executing round-trip recovery $\mathcal{D}_3(\mathcal{E}_3(P)) = P$.
 
-================================================================================
-           CNS ACTIVITY 1: CAESAR CIPHER DEMONSTRATION
-================================================================================
-Original Plaintext  : CNS Lab: Activity-01 @ 2026!
-Input Key           : 3 (Normalized shift: 3)
-Encrypted Ciphertext: FQV Ode: Dfwlylwb-01 @ 2026!
-Recovered Plaintext : CNS Lab: Activity-01 @ 2026!
---------------------------------------------------------------------------------
-Round-Trip Verified : SUCCESS (Original == Recovered)
-================================================================================
-\end{lstlisting}
+\begin{figure}[h!]
+\centering
+\fbox{\includegraphics[width=\dimexpr0.92\linewidth-2\fboxsep-2\fboxrule\relax,height=1.8in,keepaspectratio=false]{figures/screenshots/screenshot_02_caesar.png}}
+\caption{Caesar Cipher CLI Execution and Invertibility Verification}
+\label{fig:screen_caesar}
+\end{figure}
 
 \subsection{Activity 2: Vigen\`ere Cipher Demonstration}
-\begin{lstlisting}
-$ uv run python activity2_vigenere/cli.py -p "The quick brown fox jumps over the lazy dog!" -k "LEMON"
+Figure \ref{fig:screen_vigenere} shows execution with keyword \texttt{"LEMON"}. Stream synchronization maintains key position advance strictly across alphabetic tokens, producing ciphertext \texttt{"Elq ehtgw pezaz tbi ngacd shse elq znkc pct!"} with 100\% round-trip fidelity.
 
-================================================================================
-           CNS ACTIVITY 2: VIGENERE CIPHER DEMONSTRATION
-================================================================================
-Original Plaintext  : The quick brown fox jumps over the lazy dog!
-Input Key           : LEMON (Normalized: LEMON)
-Encrypted Ciphertext: Elq ehtgw pezaz tbi ngacd shse elq znkc pct!
-Recovered Plaintext : The quick brown fox jumps over the lazy dog!
---------------------------------------------------------------------------------
-Round-Trip Verified : SUCCESS (Original == Recovered)
-================================================================================
-\end{lstlisting}
+\begin{figure}[h!]
+\centering
+\fbox{\includegraphics[width=\dimexpr0.92\linewidth-2\fboxsep-2\fboxrule\relax,height=1.8in,keepaspectratio=false]{figures/screenshots/screenshot_03_vigenere.png}}
+\caption{Vigen\`ere Cipher CLI Execution and Stream Synchronization}
+\label{fig:screen_vigenere}
+\end{figure}
 
 \subsection{Activity 3: Two-Time Pad Vulnerability Demonstration}
-\begin{lstlisting}
-$ uv run python activity3_one_time_pad/cli.py --demo-key-reuse
+Figure \ref{fig:screen_otp} captures the empirical collapse of secrecy under key reuse. Reusing pad $K$ across $M_1$ (\texttt{"ATTACK AT DAWN!"}) and $M_2$ (\texttt{"DEFEND THE WALL"}) yields $C_1 \oplus C_2 = M_1 \oplus M_2$, canceling the key completely.
 
-================================================================================
-           DEMONSTRATION: CATASTROPHIC TWO-TIME PAD ATTACK
-================================================================================
-Plaintext 1 (M1)       : ATTACK AT DAWN!
-Plaintext 2 (M2)       : DEFEND THE WALL
-Shared Reused Key (Hex): 10FB4279D7D62311E26CD8393A0648
-Ciphertext 1 (C1 Hex)  : 51AF1638949D0350B64C9C786D4869
-Ciphertext 2 (C2 Hex)  : 54BE043C99920345AA29F86E7B4A04
---------------------------------------------------------------------------------
-Adversary computes C1 ^ C2:
-C1 ^ C2 (Hex)          : 051112040D0F00151C65641616026D
-M1 ^ M2 (Hex)          : 051112040D0F00151C65641616026D
-Key Canceled Out?      : YES (C1 ^ C2 == M1 ^ M2)
-
-Conclusion: Reusing a One-Time Pad key destroys perfect secrecy entirely,
-allowing an eavesdropper to recover the plaintext difference without knowing the key!
-================================================================================
-\end{lstlisting}
+\begin{figure}[h!]
+\centering
+\fbox{\includegraphics[width=\dimexpr0.92\linewidth-2\fboxsep-2\fboxrule\relax,height=1.8in,keepaspectratio=false]{figures/screenshots/screenshot_04_otp.png}}
+\caption{One-Time Pad Execution and Catastrophic Two-Time Pad Attack}
+\label{fig:screen_otp}
+\end{figure}
 
 \subsection{Activity 4: Digital Signature Tamper Detection Demonstration}
-\begin{lstlisting}
-$ uv run python activity4_digital_signature/cli.py --demo-tamper
+Figure \ref{fig:screen_sig} records the 4-stage integrity evaluation: (1) authentic message succeeds, (2) tampered message (\texttt{"5000"} $\to$ \texttt{"50000"}) is rejected, (3) corrupted signature bit is rejected, and (4) unrelated public key fails immediately.
 
-================================================================================
-      DEMONSTRATION: DIGITAL SIGNATURE INTEGRITY & TAMPER DETECTION
-================================================================================
-Original Message       : Authorise payment of 5000 INR to Student Club.
-Tampered Message       : Authorise payment of 50000 INR to Student Club.
---------------------------------------------------------------------------------
-1. Authentic Message + Original Signature : VALID [Passed]
-2. Tampered Message + Original Signature  : INVALID [Tampering Detected!]
-3. Original Message + Corrupted Signature : INVALID [Corruption Detected!]
-4. Original Message + Unrelated Public Key: INVALID [Key Mismatch Detected!]
---------------------------------------------------------------------------------
-Conclusion: Any modification of the message, signature corruption, or key mismatch
-immediately invalidates the digital signature, providing strict integrity assurance.
-================================================================================
-\end{lstlisting}
+\begin{figure}[h!]
+\centering
+\fbox{\includegraphics[width=\dimexpr0.92\linewidth-2\fboxsep-2\fboxrule\relax,height=1.8in,keepaspectratio=false]{figures/screenshots/screenshot_05_signature.png}}
+\caption{RSA-PSS Digital Signature 4-Stage Tamper Detection Execution}
+\label{fig:screen_sig}
+\end{figure}
 
 \section{Character and Byte Data Flow Pipelines}
 The interactive TUI in \texttt{main.py} dynamically renders character-by-character and byte-by-byte data flow pipelines, as documented in Tables \ref{tab:pipe_caesar}, \ref{tab:pipe_vigenere}, and \ref{tab:pipe_otp}.
@@ -678,6 +717,7 @@ The interactive TUI in \texttt{main.py} dynamically renders character-by-charact
 \begin{table}[h!]
 \centering
 \small
+\setlength{\tabcolsep}{4.5pt}
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 \rowcolor{tableheader}
@@ -760,19 +800,20 @@ Automated verification was conducted using \texttt{pytest 9.1.1} configured to a
 Table \ref{tab:test_matrix} documents the empirical outcomes of all 69 automated unit tests.
 
 \begin{footnotesize}
+\setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{0.85}
-\begin{longtable}{|p{0.36\linewidth}|p{0.20\linewidth}|p{0.28\linewidth}|c|}
+\begin{longtable}{|>{\raggedright\arraybackslash\ttfamily\scriptsize}p{2.3in}|p{1.1in}|p{2.2in}|c|}
 \caption{Complete 69-Test Verification Matrix Across All Packages}\label{tab:test_matrix} \\
 \hline
 \rowcolor{tableheader}
-\textbf{Test Identifier} & \textbf{Category} & \textbf{Input / Condition} & \textbf{Status} \\
+\textnormal{\textbf{Test Identifier}} & \textnormal{\textbf{Category}} & \textnormal{\textbf{Input / Condition}} & \textnormal{\textbf{Status}} \\
 \hline
 \endfirsthead
 \multicolumn{4}{c}%
 {\footnotesize\tablename\ \thetable\ -- \textit{Continued from previous page}} \\
 \hline
 \rowcolor{tableheader}
-\textbf{Test Identifier} & \textbf{Category} & \textbf{Input / Condition} & \textbf{Status} \\
+\textnormal{\textbf{Test Identifier}} & \textnormal{\textbf{Category}} & \textnormal{\textbf{Input / Condition}} & \textnormal{\textbf{Status}} \\
 \hline
 \endhead
 \hline
