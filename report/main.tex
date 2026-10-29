@@ -182,30 +182,30 @@ In addition to software verification, this report provides deep mathematical cry
 & 4.1 Algorithmic Pseudocode and Core Implementations & 5 \\
 & 4.2 Architectural Pipeline Flowcharts & 9 \\
 \hline
-\textbf{5.} & \textbf{IMPLEMENTATION AND RUNTIME DEMONSTRATION} & \textbf{11} \\
-& 5.1 Source Code Architecture and Function Details & 11 \\
-& 5.2 Runtime Execution Demonstrations and Verification Screenshots & 12 \\
-& 5.3 Character and Byte Data Flow Pipelines & 15 \\
+\textbf{5.} & \textbf{IMPLEMENTATION AND RUNTIME DEMONSTRATION} & \textbf{13} \\
+& 5.1 Source Code Architecture and Function Details & 13 \\
+& 5.2 Runtime Execution Demonstrations and Verification Screenshots & 14 \\
+& 5.3 Character and Byte Data Flow Pipelines & 17 \\
 \hline
-\textbf{6.} & \textbf{TESTING METHODOLOGY AND VERIFICATION MATRIX} & \textbf{16} \\
-& 6.1 Systematic Verification Strategy & 16 \\
-& 6.2 Exhaustive 69-Test Verification Matrix & 16 \\
+\textbf{6.} & \textbf{TESTING METHODOLOGY AND VERIFICATION MATRIX} & \textbf{18} \\
+& 6.1 Systematic Verification Strategy & 18 \\
+& 6.2 Exhaustive 69-Test Verification Matrix & 18 \\
 \hline
-\textbf{7.} & \textbf{SECURITY ANALYSIS AND CRYPTANALYSIS} & \textbf{18} \\
-& 7.1 Monoalphabetic Cryptanalysis & 18 \\
-& 7.2 Polyalphabetic Cryptanalysis & 18 \\
-& 7.3 Information-Theoretic Perfect Secrecy & 19 \\
-& 7.4 Asymmetric Signature Security and PKI & 19 \\
+\textbf{7.} & \textbf{SECURITY ANALYSIS AND CRYPTANALYSIS} & \textbf{20} \\
+& 7.1 Monoalphabetic Cryptanalysis & 20 \\
+& 7.2 Polyalphabetic Cryptanalysis & 20 \\
+& 7.3 Information-Theoretic Perfect Secrecy & 21 \\
+& 7.4 Asymmetric Signature Security and PKI & 22 \\
 \hline
-\textbf{8.} & \textbf{APPLICATIONS AND CONCLUSION} & \textbf{21} \\
-& 8.1 Historical and Modern Applications & 21 \\
-& 8.2 Conclusion & 21 \\
+\textbf{8.} & \textbf{APPLICATIONS AND CONCLUSION} & \textbf{23} \\
+& 8.1 Historical and Modern Applications & 23 \\
+& 8.2 Conclusion & 23 \\
 \hline
-& \textbf{REFERENCES} & \textbf{22} \\
+& \textbf{REFERENCES} & \textbf{24} \\
 \hline
-& \textbf{GROUP CONTRIBUTION MATRIX} & \textbf{23} \\
+& \textbf{GROUP CONTRIBUTION MATRIX} & \textbf{25} \\
 \hline
-& \textbf{PROJECT PRESENTATION PHOTOGRAPH} & \textbf{24} \\
+& \textbf{PROJECT PRESENTATION PHOTOGRAPH} & \textbf{26} \\
 \hline
 \end{tabular}
 \end{table}
@@ -235,19 +235,23 @@ Fig 4.3 & One-Time Pad Bytewise XOR Logic & 7 \\
 \hline
 Fig 4.4 & RSA-PSS Digital Signature Logic & 8 \\
 \hline
-Fig 4.5 & Flowcharts for Classical Substitution Operations (Caesar and Vigen\`ere) & 9 \\
+Fig 4.5 & Flowchart for Caesar Cipher Modular Substitution Pipeline & 9 \\
 \hline
-Fig 4.6 & Flowcharts for Modern Cryptographic Primitives (OTP and RSA-PSS) & 10 \\
+Fig 4.6 & Flowchart for Vigen\`ere Polyalphabetic Substitution Pipeline & 10 \\
 \hline
-Fig 5.1 & Interactive Unified Terminal Interface Entry Point (\texttt{main.py}) & 12 \\
+Fig 4.7 & Flowchart for One-Time Pad Bytewise XOR Transformation Pipeline & 11 \\
 \hline
-Fig 5.2 & Caesar Cipher CLI Execution and Invertibility Verification & 13 \\
+Fig 4.8 & Flowchart for RSA-PSS Digital Signature and Verification Pipeline & 12 \\
 \hline
-Fig 5.3 & Vigen\`ere Cipher CLI Execution and Stream Synchronization & 13 \\
+Fig 5.1 & Interactive Unified Terminal Interface Entry Point (\texttt{main.py}) & 14 \\
 \hline
-Fig 5.4 & One-Time Pad Execution and Catastrophic Two-Time Pad Attack & 13 \\
+Fig 5.2 & Caesar Cipher CLI Execution and Invertibility Verification & 15 \\
 \hline
-Fig 5.5 & RSA-PSS Digital Signature 4-Stage Tamper Detection Execution & 14 \\
+Fig 5.3 & Vigen\`ere Cipher CLI Execution and Stream Synchronization & 15 \\
+\hline
+Fig 5.4 & One-Time Pad Execution and Catastrophic Two-Time Pad Attack & 15 \\
+\hline
+Fig 5.5 & RSA-PSS Digital Signature 4-Stage Tamper Detection Execution & 16 \\
 \hline
 \end{tabular}
 \end{table}
@@ -271,17 +275,17 @@ Fig 5.5 & RSA-PSS Digital Signature 4-Stage Tamper Detection Execution & 14 \\
 \hline
 Table 3.1 & Software Toolchain and Verified Dependencies & 4 \\
 \hline
-Table 5.1 & Caesar Cipher Character Data Flow Pipeline Trace ($K = 3$) & 15 \\
+Table 5.1 & Caesar Cipher Character Data Flow Pipeline Trace ($K = 3$) & 17 \\
 \hline
-Table 5.2 & Vigen\`ere Polyalphabetic Keyword Alignment Pipeline Trace & 15 \\
+Table 5.2 & Vigen\`ere Polyalphabetic Keyword Alignment Pipeline Trace & 17 \\
 \hline
-Table 5.3 & One-Time Pad Bytewise XOR Transformation Pipeline Trace & 15 \\
+Table 5.3 & One-Time Pad Bytewise XOR Transformation Pipeline Trace & 17 \\
 \hline
-Table 6.1 & Complete 69-Test Verification Matrix Across All Packages & 16 \\
+Table 6.1 & Complete 69-Test Verification Matrix Across All Packages & 18 \\
 \hline
-Table 7.1 & Comparative Evaluation of Implemented Cryptosystems & 20 \\
+Table 7.1 & Comparative Evaluation of Implemented Cryptosystems & 22 \\
 \hline
-Table 8.1 & Group Contribution and Deliverable Ownership Matrix & 23 \\
+Table 8.1 & Group Contribution and Deliverable Ownership Matrix & 25 \\
 \hline
 \end{tabular}
 \end{table}
@@ -543,36 +547,41 @@ Figure \ref{fig:code_rsa} presents the asymmetric digital signature implementati
 
 \section{Architectural Pipeline Flowcharts}
 
-\subsection{Classical Substitution Control Flow}
-Classical substitution ciphers (Activities 1 and 2) operate on discrete character streams. As detailed in Figure \ref{fig:classical_flow}, both ciphers implement an iterative state-machine architecture that enforces strict input validation, domain normalization, and selective character substitution:
-\begin{itemize}
-    \item \textbf{Caesar Cipher Pipeline}: The integer shift key $K$ is mapped to the canonical residue ring $\mathbb{Z}_{26}$ via $K \bmod 26$. Alphabetic characters are shifted modulo 26 preserving case, while non-alphabetic characters bypass substitution and pass through unchanged.
-    \item \textbf{Vigen\`ere Cipher Pipeline}: The key string is validated to ensure non-empty ASCII alphabetic characters and normalized to uppercase. Crucially, the keystream pointer $j$ advances \textit{only} when an alphabetic token is enciphered; non-alphabetic tokens freeze $j$, preserving linguistic alignment across the Tabula Recta.
+\subsection{Caesar Cipher Modular Substitution Pipeline}
+The Caesar cipher pipeline executes an iterative state-machine over the input plaintext string. As illustrated in Figure \ref{fig:flow_caesar}, the execution pipeline enforces strict input type validation and residue normalization:
+\begin{itemize}[leftmargin=1.5em,topsep=1pt,itemsep=1pt,parsep=0pt]
+    \item \textbf{Type Validation and Normalization}: Asserts that the key is strictly an integer while explicitly rejecting booleans to prevent Python subclass coercion. The shift is normalized into residue ring $\mathbb{Z}_{26}$ via $K \gets K \bmod 26$.
+    \item \textbf{Character Stream Traversal}: Iterates over character $c \in P$. Alphabetic tokens undergo modular shifting preserving case; non-alphabetic tokens bypass arithmetic and pass verbatim.
+    \item \textbf{Invertibility}: Decryption invokes the identical pipeline with additive inverse $-K \bmod 26$, ensuring round-trip fidelity $\mathcal{D}_K(\mathcal{E}_K(P)) = P$.
 \end{itemize}
 
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}[
     auto,
-    node distance = 0.42cm and 0.8cm,
-    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=8.2em, text centered, rounded corners=3pt, minimum height=1.8em, font=\fontsize{7.5}{9.5}\selectfont},
-    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=5.5em, text badly centered, inner sep=1pt, font=\fontsize{7}{8.5}\selectfont},
+    scale=0.86, transform shape,
+    node distance = 0.30cm and 0.85cm,
+    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=12.2em, text centered, rounded corners=3pt, minimum height=1.7em, font=\fontsize{7.5}{9.5}\selectfont},
+    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=6.8em, text badly centered, inner sep=1pt, font=\fontsize{7}{8.5}\selectfont},
     line/.style = {draw=ksitmaroon!90, -{Latex[length=2.0mm]}, semithick}
 ]
-    % Left Column: Caesar Cipher
-    \node [flowblock, fill=ksitmaroon!12] (c_title) {\textbf{Caesar Cipher (Shift)}};
-    \node [flowblock, below=0.35cm of c_title] (c_input) {Plaintext $P$, Shift $K \in \mathbb{Z}$};
-    \node [flowblock, below=0.35cm of c_input] (c_norm) {Normalize Shift\\[2pt] $K \gets K \bmod 26$};
-    \node [flowblock, below=0.35cm of c_norm] (c_loop) {Fetch Next Char $c \in P$};
-    \node [decision, below=0.35cm of c_loop] (c_alpha) {Is $c \in \Sigma_{\text{alpha}}$?};
-    \node [flowblock, below=0.45cm of c_alpha] (c_shift) {Modular Shift:\\[2pt] $(c - \text{base} + K) \bmod 26$};
-    \node [flowblock, right=0.65cm of c_shift] (c_pres) {Preserve $c$\\[2pt] Verbatim};
-    \node [flowblock, below=0.45cm of c_shift] (c_join) {Append to Output $C$};
-    \node [decision, below=0.35cm of c_join] (c_more) {More Chars?};
-    \node [flowblock, below=0.35cm of c_more] (c_done) {Return Ciphertext $C$};
+    \node [flowblock, fill=ksitmaroon!12] (c_title) {\textbf{Activity 1: Caesar Cipher Pipeline}};
+    \node [flowblock, below=0.30cm of c_title] (c_input) {Input: Plaintext $P$, Shift Key $K \in \mathbb{Z}$};
+    \node [decision, below=0.30cm of c_input] (c_valid) {Is $K$ an integer\\(not boolean)?};
+    \node [flowblock, right=0.85cm of c_valid] (c_err) {Raise \texttt{TypeError}};
+    \node [flowblock, below=0.32cm of c_valid] (c_norm) {Normalize Shift Key:\\[1pt] $K \gets K \bmod 26$};
+    \node [flowblock, below=0.30cm of c_norm] (c_loop) {Fetch Next Character $c \in P$};
+    \node [decision, below=0.30cm of c_loop] (c_alpha) {Is $c \in \Sigma_{\text{alpha}}$?};
+    \node [flowblock, below=0.32cm of c_alpha] (c_shift) {Modular Shift:\\[1pt] $c' \gets (c - \text{base} + K) \bmod 26 + \text{base}$};
+    \node [flowblock, right=0.85cm of c_shift] (c_pres) {Preserve $c$ Verbatim\\[1pt] ($c' \gets c$)};
+    \node [flowblock, below=0.32cm of c_shift] (c_join) {Append $c'$ to Ciphertext $C$};
+    \node [decision, below=0.30cm of c_join] (c_more) {More Chars\\in $P$?};
+    \node [flowblock, below=0.32cm of c_more] (c_done) {Return Encrypted Ciphertext $C$};
 
     \draw [line] (c_title) -- (c_input);
-    \draw [line] (c_input) -- (c_norm);
+    \draw [line] (c_input) -- (c_valid);
+    \draw [line] (c_valid) -- node [near start, right] {\scriptsize Yes} (c_norm);
+    \draw [line] (c_valid) -- node [near start, above] {\scriptsize No} (c_err);
     \draw [line] (c_norm) -- (c_loop);
     \draw [line] (c_loop) -- (c_alpha);
     \draw [line] (c_alpha) -- node [near start, right] {\scriptsize Yes} (c_shift);
@@ -581,22 +590,49 @@ Classical substitution ciphers (Activities 1 and 2) operate on discrete characte
     \draw [line] (c_pres) |- (c_join);
     \draw [line] (c_join) -- (c_more);
     \draw [line] (c_more) -- node [near start, right] {\scriptsize No} (c_done);
-    \draw [line] (c_more.west) -- ++(-0.65,0) |- node [near end, left] {\scriptsize Yes} (c_loop.west);
+    \draw [line] (c_more.west) -- ++(-1.0,0) |- node [near end, left] {\scriptsize Yes} (c_loop.west);
+\end{tikzpicture}
+\caption{Flowchart for Caesar Cipher Modular Substitution Pipeline}
+\label{fig:flow_caesar}
+\end{figure}
 
-    % Right Column: Vigenere Cipher (4.5cm horizontal separation)
-    \node [flowblock, fill=ksitmaroon!12, right=4.5cm of c_title] (v_title) {\textbf{Vigen\`ere (Polyalphabetic)}};
-    \node [flowblock, below=0.35cm of v_title] (v_input) {Plaintext $P$, Key $K \in \Sigma^+$};
-    \node [flowblock, below=0.35cm of v_input] (v_norm) {Validate \& Uppercase\\Init Key Index $j = 0$};
-    \node [flowblock, below=0.35cm of v_norm] (v_loop) {Fetch Next Char $c \in P$};
-    \node [decision, below=0.35cm of v_loop] (v_alpha) {Is $c \in \Sigma_{\text{alpha}}$?};
-    \node [flowblock, below=0.45cm of v_alpha] (v_shift) {Tabula Recta Shift\\Advance $j \gets j + 1$};
-    \node [flowblock, right=0.65cm of v_shift] (v_pres) {Preserve Verbatim\\Pause Pointer ($j$)};
-    \node [flowblock, below=0.45cm of v_shift] (v_join) {Append to Output $C$};
-    \node [decision, below=0.35cm of v_join] (v_more) {More Chars?};
-    \node [flowblock, below=0.35cm of v_more] (v_done) {Return Ciphertext $C$};
+\clearpage
+
+\subsection{Vigen\`ere Polyalphabetic Substitution Pipeline}
+The Vigen\`ere cipher pipeline dynamically cycles through an alphabetic keyword to apply polyalphabetic substitution via Tabula Recta mapping. As illustrated in Figure \ref{fig:flow_vigenere}, the stream pointer synchronization guarantees reversible linguistic enciphering:
+\begin{itemize}[leftmargin=1.5em,topsep=1pt,itemsep=1pt,parsep=0pt]
+    \item \textbf{Keyword Validation and Canonicalization}: Asserts that the key is a non-empty string consisting exclusively of ASCII letters, rejecting whitespace or symbols with \texttt{ValueError}, and normalizes to uppercase.
+    \item \textbf{Keystream Pointer Synchronization}: Keystream pointer $j$ references keyword character $K[j \bmod |K|]$. The pointer advances strictly when alphabetic tokens are enciphered, while punctuation and spaces pass verbatim and pause $j$.
+    \item \textbf{Tabula Recta Mapping}: Computes modular shift $(c - \text{base} + \text{shift}) \bmod 26 + \text{base}$, with decryption evaluating $(c - \text{base} - \text{shift}) \bmod 26 + \text{base}$ to assure invertibility.
+\end{itemize}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+    auto,
+    scale=0.86, transform shape,
+    node distance = 0.30cm and 0.85cm,
+    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=12.5em, text centered, rounded corners=3pt, minimum height=1.7em, font=\fontsize{7.5}{9.5}\selectfont},
+    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=6.8em, text badly centered, inner sep=1pt, font=\fontsize{7}{8.5}\selectfont},
+    line/.style = {draw=ksitmaroon!90, -{Latex[length=2.0mm]}, semithick}
+]
+    \node [flowblock, fill=ksitmaroon!12] (v_title) {\textbf{Activity 2: Vigen\`ere Cipher Pipeline}};
+    \node [flowblock, below=0.30cm of v_title] (v_input) {Input: Plaintext $P$, Key String $K \in \Sigma^+$};
+    \node [decision, below=0.30cm of v_input] (v_valid) {Is $K$ non-empty\\ASCII alphabetic?};
+    \node [flowblock, right=0.85cm of v_valid] (v_err) {Raise \texttt{ValueError}};
+    \node [flowblock, below=0.32cm of v_valid] (v_norm) {Normalize: $K \gets \text{upper}(K)$\\[1pt] Initialize Pointer $j \gets 0$};
+    \node [flowblock, below=0.30cm of v_norm] (v_loop) {Fetch Next Character $c \in P$};
+    \node [decision, below=0.30cm of v_loop] (v_alpha) {Is $c \in \Sigma_{\text{alpha}}$?};
+    \node [flowblock, below=0.32cm of v_alpha] (v_shift) {Tabula Recta Shift via $K[j \bmod |K|]$\\[1pt] Advance Keystream: $j \gets j + 1$};
+    \node [flowblock, right=0.85cm of v_shift] (v_pres) {Preserve $c$ Verbatim\\[1pt] Pause Keystream ($j$ unchanged)};
+    \node [flowblock, below=0.32cm of v_shift] (v_join) {Append $c'$ to Ciphertext $C$};
+    \node [decision, below=0.30cm of v_join] (v_more) {More Chars\\in $P$?};
+    \node [flowblock, below=0.32cm of v_more] (v_done) {Return Encrypted Ciphertext $C$};
 
     \draw [line] (v_title) -- (v_input);
-    \draw [line] (v_input) -- (v_norm);
+    \draw [line] (v_input) -- (v_valid);
+    \draw [line] (v_valid) -- node [near start, right] {\scriptsize Yes} (v_norm);
+    \draw [line] (v_valid) -- node [near start, above] {\scriptsize No} (v_err);
     \draw [line] (v_norm) -- (v_loop);
     \draw [line] (v_loop) -- (v_alpha);
     \draw [line] (v_alpha) -- node [near start, right] {\scriptsize Yes} (v_shift);
@@ -605,74 +641,100 @@ Classical substitution ciphers (Activities 1 and 2) operate on discrete characte
     \draw [line] (v_pres) |- (v_join);
     \draw [line] (v_join) -- (v_more);
     \draw [line] (v_more) -- node [near start, right] {\scriptsize No} (v_done);
-    \draw [line] (v_more.west) -- ++(-0.65,0) |- node [near end, left] {\scriptsize Yes} (v_loop.west);
+    \draw [line] (v_more.west) -- ++(-1.0,0) |- node [near end, left] {\scriptsize Yes} (v_loop.west);
 \end{tikzpicture}
-\caption{Flowcharts for Classical Substitution Operations (Caesar and Vigen\`ere Pipelines)}
-\label{fig:classical_flow}
+\caption{Flowchart for Vigen\`ere Polyalphabetic Substitution Pipeline}
+\label{fig:flow_vigenere}
 \end{figure}
 
 \clearpage
 
-\subsection{Modern Cryptographic Primitives Control Flow}
-Modern cryptographic engineering processes arbitrary binary octets through mathematical algebraic groups. Figure \ref{fig:modern_flow} depicts the execution pipelines for the symmetric One-Time Pad stream cipher (Activity 3) and the asymmetric RSA-PSS digital signature scheme (Activity 4).
-
-\textbf{One-Time Pad Pipeline}: The OTP enforces Shannon's conditions for perfect secrecy:
-\begin{itemize}
-    \item \textbf{CSPRNG Keystream}: The key $K$ is generated via OS-level CSPRNG (\texttt{secrets.token\_bytes}), ensuring uniform entropy.
-    \item \textbf{Length Invariant}: A strict assertion validates $\text{len}(M) == \text{len}(K)$; mismatches trigger \texttt{ValueError}.
-    \item \textbf{Involutional XOR}: Encryption ($C_i = M_i \oplus K_i$) and decryption ($M'_i = C_i \oplus K_i = M_i$) share identical execution logic due to the self-inverting property $A \oplus B \oplus B = A$.
-\end{itemize}
-
-\textbf{RSA-PSS Signature Pipeline}: Integrity and non-repudiation are established through multi-stage cryptographic transformations:
-\begin{itemize}
-    \item \textbf{Cryptographic Hashing}: Message $M$ is digested via SHA-256 to produce fixed 32-byte digest $h = \text{Hash}(M)$.
-    \item \textbf{Probabilistic Encoding}: PSS encoding introduces randomized salt with Mask Generation Function 1 (MGF1), creating encoded octets $\mu$.
-    \item \textbf{Modular Exponentiation \& Tamper Detection}: The private key exponentiates $S \equiv \mu^d \pmod n$. Verification checks $\mu' \equiv S^e \pmod n$, unmasks the digest, and confirms hash equality. Any payload tampering produces immediate rejection.
+\subsection{One-Time Pad Bytewise Stream Pipeline}
+The One-Time Pad pipeline enforces Shannon's conditions for perfect secrecy through bytewise bitwise XOR transformation. As illustrated in Figure \ref{fig:flow_otp}, the pipeline processes arbitrary binary byte streams:
+\begin{itemize}[leftmargin=1.5em,topsep=1pt,itemsep=1pt,parsep=0pt]
+    \item \textbf{CSPRNG Keystream Generation}: Key $K$ is drawn from OS-level cryptographic entropy (\texttt{secrets.token\_bytes}), ensuring uniform distribution over $\{0, 1\}^{8L}$.
+    \item \textbf{Strict Length Invariant Assertion}: Enforces $|M| == |K|$; length discrepancies trigger immediate \texttt{ValueError} exception containment to prevent truncation or partial reuse.
+    \item \textbf{Involutional XOR Operation}: Enciphering computes $C_i = M_i \oplus K_i$. Deciphering evaluates $M'_i = C_i \oplus K_i = (M_i \oplus K_i) \oplus K_i = M_i$, returning a safe tuple \texttt{(decoded\_text, raw\_bytes)}.
 \end{itemize}
 
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}[
     auto,
-    node distance = 0.42cm and 0.8cm,
-    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=8.5em, text centered, rounded corners=3pt, minimum height=1.8em, font=\fontsize{7.5}{9.5}\selectfont},
-    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=5.5em, text badly centered, inner sep=1pt, font=\fontsize{7}{8.5}\selectfont},
+    scale=0.86, transform shape,
+    node distance = 0.30cm and 0.85cm,
+    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=13.0em, text centered, rounded corners=3pt, minimum height=1.7em, font=\fontsize{7.5}{9.5}\selectfont},
+    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=6.8em, text badly centered, inner sep=1pt, font=\fontsize{7}{8.5}\selectfont},
     line/.style = {draw=ksitmaroon!90, -{Latex[length=2.0mm]}, semithick}
 ]
-    % Left Column: One-Time Pad
-    \node [flowblock, fill=ksitmaroon!12] (otp_title) {\textbf{One-Time Pad (XOR)}};
-    \node [flowblock, below=0.35cm of otp_title] (otp_msg) {Plaintext $M \in \{0,1\}^8$};
-    \node [flowblock, below=0.35cm of otp_msg] (otp_key) {CSPRNG Key $K$\\(\texttt{secrets.token\_bytes})};
-    \node [decision, below=0.35cm of otp_key] (otp_check) {$|M| == |K|$?};
-    \node [flowblock, below=0.45cm of otp_check] (otp_xor) {Bitwise XOR Encrypt\\$C_i = M_i \oplus K_i$};
-    \node [flowblock, below=0.35cm of otp_xor] (otp_dec) {Bitwise XOR Decrypt\\$M'_i = C_i \oplus K_i = M_i$};
-    \node [flowblock, left=0.65cm of otp_check] (otp_err) {Raise \texttt{ValueError}};
+    \node [flowblock, fill=ksitmaroon!12] (otp_title) {\textbf{Activity 3: One-Time Pad Stream Pipeline}};
+    \node [flowblock, below=0.30cm of otp_title] (otp_input) {Input: Message $M \in \{0, 1\}^*$, Pad Length $L$};
+    \node [flowblock, below=0.30cm of otp_input] (otp_key) {CSPRNG Key Generation:\\[1pt] $K \gets \texttt{secrets.token\_bytes}(L)$};
+    \node [flowblock, below=0.30cm of otp_key] (otp_encode) {Encode $M$ to UTF-8 Bytes:\\[1pt] $M_{\text{bytes}} \in \{0, 1\}^{8L}$};
+    \node [decision, below=0.30cm of otp_encode] (otp_check) {Assert\\$|M| == |K|$?};
+    \node [flowblock, right=0.85cm of otp_check] (otp_err) {Raise \texttt{ValueError}:\\[1pt] Length Mismatch};
+    \node [flowblock, below=0.32cm of otp_check] (otp_enc) {Bitwise XOR Enciphering:\\[1pt] $C_i = M_i \oplus K_i \quad \forall \, i \in \{1, \dots, L\}$};
+    \node [flowblock, below=0.30cm of otp_enc] (otp_out) {Output Ciphertext Bytes $C \in \{0, 1\}^{8L}$};
+    \node [flowblock, below=0.30cm of otp_out] (otp_dec) {Bitwise XOR Deciphering (Involution):\\[1pt] $M'_i = C_i \oplus K_i = (M_i \oplus K_i) \oplus K_i = M_i$};
+    \node [flowblock, below=0.30cm of otp_dec] (otp_utf) {Attempt UTF-8 Decoding:\\[1pt] Return Tuple \texttt{(decoded\_text, raw\_bytes)}};
 
-    \draw [line] (otp_title) -- (otp_msg);
-    \draw [line] (otp_msg) -- (otp_key);
-    \draw [line] (otp_key) -- (otp_check);
-    \draw [line] (otp_check) -- node [near start, right] {\scriptsize Yes} (otp_xor);
+    \draw [line] (otp_title) -- (otp_input);
+    \draw [line] (otp_input) -- (otp_key);
+    \draw [line] (otp_key) -- (otp_encode);
+    \draw [line] (otp_encode) -- (otp_check);
+    \draw [line] (otp_check) -- node [near start, right] {\scriptsize Yes} (otp_enc);
     \draw [line] (otp_check) -- node [near start, above] {\scriptsize No} (otp_err);
-    \draw [line] (otp_xor) -- (otp_dec);
-
-    % Right Column: RSA-PSS Signature (4.5cm horizontal separation)
-    \node [flowblock, fill=ksitmaroon!12, right=4.5cm of otp_title] (rsa_title) {\textbf{RSA-PSS Signature}};
-    \node [flowblock, below=0.35cm of rsa_title] (rsa_msg) {Message $M \to$ SHA-256\\$h = \text{Hash}(M)$};
-    \node [flowblock, below=0.35cm of rsa_msg] (rsa_pss) {Probabilistic Encoding\\$\mu = \text{PSS-Encode}(h, \text{salt})$};
-    \node [flowblock, below=0.35cm of rsa_pss] (rsa_sign) {Modular Exponentiation\\$S = \mu^d \pmod n$ (Sign)};
-    \node [decision, below=0.35cm of rsa_sign] (rsa_ver) {$\mu' = S^e \bmod n$\\$h' == h$?};
-    \node [flowblock, below left=0.45cm and -0.4cm of rsa_ver] (rsa_ok) {\textbf{VALID}: Intact\\Authenticity Assured};
-    \node [flowblock, below right=0.45cm and -0.4cm of rsa_ver] (rsa_tamper) {\textbf{INVALID}: Rejected\\Tampering Detected};
-
-    \draw [line] (rsa_title) -- (rsa_msg);
-    \draw [line] (rsa_msg) -- (rsa_pss);
-    \draw [line] (rsa_pss) -- (rsa_sign);
-    \draw [line] (rsa_sign) -- (rsa_ver);
-    \draw [line] (rsa_ver) -| node [near start, above] {\scriptsize Yes} (rsa_ok);
-    \draw [line] (rsa_ver) -| node [near start, above] {\scriptsize No} (rsa_tamper);
+    \draw [line] (otp_enc) -- (otp_out);
+    \draw [line] (otp_out) -- (otp_dec);
+    \draw [line] (otp_dec) -- (otp_utf);
 \end{tikzpicture}
-\caption{Flowchart for Modern Cryptographic Primitives (Activities 3 \& 4)}
-\label{fig:modern_flow}
+\caption{Flowchart for One-Time Pad Bytewise XOR Transformation Pipeline}
+\label{fig:flow_otp}
+\end{figure}
+
+\clearpage
+
+\subsection{RSA-PSS Digital Signature and Verification Pipeline}
+The RSA-PSS pipeline implements asymmetric digital signing and public verification using 2048-bit modulus $n$, public exponent $e = 65537$, and SHA-256. As illustrated in Figure \ref{fig:flow_rsa}, the multi-stage cryptographic pipeline guarantees authenticity and non-repudiation:
+\begin{itemize}[leftmargin=1.5em,topsep=1pt,itemsep=1pt,parsep=0pt]
+    \item \textbf{Cryptographic Digest and Randomized Salt}: Payload $M$ is hashed via SHA-256 to produce $h = \text{Hash}(M)$, followed by PSS probabilistic encoding with randomized salt and MGF1 masking.
+    \item \textbf{Private Signing Exponentiation}: Computes signature representative $S \equiv \mu^d \pmod n$ using private exponent $d$ ($256$ bytes).
+    \item \textbf{Public Modular Inversion and Verification}: Verifier unmasks $\mu' \equiv S^e \pmod n$, extracts salt, and asserts $h' == h$. Any message alteration or key mismatch triggers immediate rejection with \texttt{InvalidSignature}.
+\end{itemize}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[
+    auto,
+    scale=0.86, transform shape,
+    node distance = 0.30cm and 0.85cm,
+    flowblock/.style = {rectangle, draw=ksitmaroon, fill=codebg, text width=13.0em, text centered, rounded corners=3pt, minimum height=1.7em, font=\fontsize{7.5}{9.5}\selectfont},
+    decision/.style = {diamond, draw=ksitmaroon, fill=tableheader, text width=7.0em, text badly centered, inner sep=1pt, font=\fontsize{7}{8.5}\selectfont},
+    line/.style = {draw=ksitmaroon!90, -{Latex[length=2.0mm]}, semithick}
+]
+    \node [flowblock, fill=ksitmaroon!12] (rsa_title) {\textbf{Activity 4: RSA-PSS Digital Signature Pipeline}};
+    \node [flowblock, below=0.30cm of rsa_title] (rsa_input) {Input Message $M$, Keypair $(d, n) / (e, n)$};
+    \node [flowblock, below=0.30cm of rsa_input] (rsa_hash) {Cryptographic Hash Function:\\[1pt] $h \gets \text{SHA-256}(M) \in \{0, 1\}^{256}$};
+    \node [flowblock, below=0.30cm of rsa_hash] (rsa_pss) {Probabilistic Signature Scheme Encoding:\\[1pt] $\mu \gets \text{PSS-Encode}(h, \text{salt}_{\text{random}}, \text{MGF1})$};
+    \node [flowblock, below=0.30cm of rsa_pss] (rsa_sign) {Private Modular Exponentiation (Sign):\\[1pt] $S \equiv \mu^d \pmod n \quad (256\text{ bytes})$};
+    \node [flowblock, below=0.30cm of rsa_sign] (rsa_tx) {Transmission Across Untrusted Channel:\\[1pt] Tuple $(M, S)$ Received by Verifier};
+    \node [flowblock, below=0.30cm of rsa_tx] (rsa_ver) {Public Modular Inversion:\\[1pt] $\mu' \equiv S^e \pmod n \implies \text{Extract } h'$};
+    \node [decision, below=0.30cm of rsa_ver] (rsa_check) {Does $h' == h$\\[1pt] $(\text{SHA-256}(M))$?};
+    \node [flowblock, below left=0.36cm and 0.1cm of rsa_check] (rsa_ok) {\textbf{Status: VALID}\\[1pt] Authenticity Assured};
+    \node [flowblock, below right=0.36cm and 0.1cm of rsa_check] (rsa_fail) {\textbf{Status: TAMPER DETECTED}\\[1pt] Raise \texttt{InvalidSignature}};
+
+    \draw [line] (rsa_title) -- (rsa_input);
+    \draw [line] (rsa_input) -- (rsa_hash);
+    \draw [line] (rsa_hash) -- (rsa_pss);
+    \draw [line] (rsa_pss) -- (rsa_sign);
+    \draw [line] (rsa_sign) -- (rsa_tx);
+    \draw [line] (rsa_tx) -- (rsa_ver);
+    \draw [line] (rsa_ver) -- (rsa_check);
+    \draw [line] (rsa_check) -| node [near start, above] {\scriptsize Yes} (rsa_ok);
+    \draw [line] (rsa_check) -| node [near start, above] {\scriptsize No} (rsa_fail);
+\end{tikzpicture}
+\caption{Flowchart for RSA-PSS Digital Signature and Verification Pipeline}
+\label{fig:flow_rsa}
 \end{figure}
 
 \clearpage
